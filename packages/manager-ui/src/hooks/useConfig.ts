@@ -7,6 +7,7 @@ const selectedKey = "spaship-selected-config";
 const useConfig = () => {
   const [configs, setConfigs] = useState<IConfig[]>((window as any).SPAship.configs);
   const [selected, setSelected] = useState<IConfig>();
+  const [env, setEnv] = useState<any>((window as any).SPAship.env);
 
   const saveStorage = (key: string, value: string) => {
     try {
@@ -28,6 +29,13 @@ const useConfig = () => {
     const newConfigs = [...configs, conf];
     saveStorage(configsKey, JSON.stringify(newConfigs));
     setConfigs(newConfigs);
+  };
+
+
+  const addEnv = (env: any) => {
+    const envConfigs = env;
+    saveStorage(env, JSON.stringify(envConfigs));
+    setEnv(envConfigs);
   };
 
   const removeConfig = (name: string) => {
@@ -55,7 +63,7 @@ const useConfig = () => {
       });
       setConfigs(all);
     }
-  }, [configs]);
+  }, [configs, env]);
 
   useEffect(() => {
     const selectedName = localStorage.getItem(selectedKey);
@@ -66,6 +74,7 @@ const useConfig = () => {
   return {
     configs,
     selected,
+    env,
     setSelectedConfig,
     addConfig,
     removeConfig,

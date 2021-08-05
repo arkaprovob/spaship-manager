@@ -12,4 +12,8 @@ window.SPAship = {
       ],
     },
   ],
+  env:
+  {
+    managerPath: "http://localhost:2345/api/v1",
+  },
 };

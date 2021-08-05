@@ -20,10 +20,10 @@ import { get } from "../../utils/APIUtil";
 import useConfig from "../../hooks/useConfig";
 
 export default () => {
-  const { selected, setSelectedConfig } = useConfig();
+  const { selected, setSelectedConfig, env } = useConfig();
   const [event, setEvent] = useState([]);
 
-  const getEventData = fetchEventData(selected, setEvent);
+  const getEventData = fetchEventData(selected, setEvent, env);
 
   useEffect(() => {
     getEventData();
@@ -73,12 +73,12 @@ export default () => {
   );
 };
 
-function fetchEventData(selected: IConfig | undefined, setEvent: any) {
+function fetchEventData(selected: IConfig | undefined, setEvent: any, env : any) {
   return async () => {
     try {
-      const url = selected?.environments[0].api + "/event/get/latest/activities";
+      const url = env.managerPath + "/event/get/latest/activities";
       setEvent([]);
-      if (selected) {
+      if (url) {
         const data = await get<any>(url);
         setEvent(data);
       }

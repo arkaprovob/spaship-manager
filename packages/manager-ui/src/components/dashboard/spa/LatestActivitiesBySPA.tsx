@@ -13,10 +13,10 @@ import { get } from '../../../utils/APIUtil';
 
 export default () => {
     const [event, setEvent] = useState([]);
-    const { selected, setSelectedConfig } = useConfig();
+    const { selected, setSelectedConfig, env } = useConfig();
     const { spaName, propertyName} = useParams<{ spaName: string, propertyName: string }>();
     const query = spaName;
-    const getEventData = fetchEventData(selected, query, setEvent, propertyName);
+    const getEventData = fetchEventData(selected, query, setEvent, propertyName, env);
     const eventResponse = getEventResponse(event);
     const getColorCode = fetchColorCode()
 
@@ -81,11 +81,11 @@ function fetchColorCode() {
     };
 }
 
-function fetchEventData(selected: IConfig | undefined, query: string, setEvent: any, propertyName: string) {
+function fetchEventData(selected: IConfig | undefined, query: string, setEvent: any, propertyName: string, env: any) {
     return async () => {
         try {
-            const url = selected?.environments[0].api + `/event/get/spaName/latest/activities/${query}/${propertyName}`;
-            if (selected) {
+            const url = env.managerPath  + `/event/get/spaName/latest/activities/${query}/${propertyName}`;
+            if (url) {
                 const data = await get<any>(url);
                 setEvent(data);
             }

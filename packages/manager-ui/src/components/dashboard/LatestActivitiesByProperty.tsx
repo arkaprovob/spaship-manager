@@ -15,12 +15,12 @@ interface IProps {
 }
 
 export default (props: IProps) => {
-    const { selected, setSelectedConfig } = useConfig();
+    const { selected, setSelectedConfig, env } = useConfig();
     const { propertyNameRequest } = props;
     const [event, setEvent] = useState([]);
     const { propertyName } = useParams<{ propertyName: string }>();
     const query = propertyNameRequest || propertyName;
-    const getEventData = fetchEventData(selected, query, setEvent);
+    const getEventData = fetchEventData(selected, query, setEvent, env);
 
     useEffect(() => {
         getEventData();
@@ -84,12 +84,12 @@ function fetchEventResponse(event: never[]) {
     return eventResponse;
 }
 
-function fetchEventData(selected: IConfig | undefined, query: string, setEvent: any) {
+function fetchEventData(selected: IConfig | undefined, query: string, setEvent: any, env: any) {
     return async () => {
         try {
-            const url = selected?.environments[0].api + `/event/get/latest/activities/${query}`;
+            const url = env.managerPath + `/event/get/latest/activities/${query}`;
             setEvent([]);
-            if (selected) {
+            if (url) {
                 const data = await get<any>(url);
                 setEvent(data);
             }

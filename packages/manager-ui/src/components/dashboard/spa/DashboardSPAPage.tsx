@@ -12,11 +12,11 @@ import SPAEnvChart from "./SPAEnvChart";
 import SPAEnvMonthChart from "./SPAEnvMonthChart";
 
 export default () => {
-  const { configs, selected, setSelectedConfig, addConfig, removeConfig } = useConfig();
+  const { configs, selected, setSelectedConfig, addConfig, removeConfig, env } = useConfig();
   const { spaName, propertyName } = useParams<{ spaName: string, propertyName: string }>();
   const [event, setEvent] = useState([]);
 
-  const getEventData = fetchEventData(selected, spaName, setEvent, propertyName);
+  const getEventData = fetchEventData(selected, spaName, setEvent, propertyName, env);
 
   useEffect(() => {
     getEventData();
@@ -75,11 +75,11 @@ function getEventResponse(event: never[]) {
   return eventResponse;
 }
 
-function fetchEventData(selected: IConfig | undefined, spaName: string, setEvent: any, propertyName: any) {
+function fetchEventData(selected: IConfig | undefined, spaName: string, setEvent: any, propertyName: any, env: any) {
   return async () => {
     try {
-      const url = selected?.environments[0].api + `/event/get/property/spaname/count/${spaName}/${propertyName}`;
-      if (selected) {
+      const url = env.managerPath + `/event/get/property/spaname/count/${spaName}/${propertyName}`;
+      if (url) {
         const data = await get<any>(url);
         setEvent(data);
       }

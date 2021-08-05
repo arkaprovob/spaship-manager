@@ -13,12 +13,12 @@ import { get } from "../../utils/APIUtil";
 import { IConfig } from "../../config";
 
 export default () => {
-  const { selected, setSelectedConfig } = useConfig();
+  const { selected, setSelectedConfig, env } = useConfig();
   const [event, setEvent] = useState([]);
   const { spaName } = useParams();
   const query = spaName;
 
-  const getEventData = fetchEventData(selected, setEvent);
+  const getEventData = fetchEventData(selected, setEvent, env);
 
   useEffect(() => {
     getEventData();
@@ -133,12 +133,12 @@ export default () => {
     </div>
   );
 };
-function fetchEventData(selected, setEvent) {
+function fetchEventData(selected, setEvent, env) {
   return async () => {
     try {
-      const url = selected?.environments[0].api + "/event/get/chart/all/env";
+      const url =  env.managerPath + "/event/get/chart/all/env";
       setEvent([]);
-      if (selected) {
+      if (url) {
         const data = await get(url);
         setEvent(data);
       }

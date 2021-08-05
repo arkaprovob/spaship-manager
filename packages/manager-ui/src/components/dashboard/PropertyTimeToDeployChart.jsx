@@ -6,12 +6,12 @@ import { get } from '../../utils/APIUtil';
 
 
 export default (props) => {
-  const { selected, setSelectedConfig } = useConfig();
+  const { selected, setSelectedConfig, env } = useConfig();
   const { propertyNameRequest } = props;
   const [event, setEvent] = useState([]);
   const { propertyName } = useParams();
   const query = propertyNameRequest || propertyName;
-  const getEventData = fetchEventData(selected, query, setEvent);
+  const getEventData = fetchEventData(selected, query, setEvent, env);
 
   useEffect(() => {
     getEventData();
@@ -91,12 +91,12 @@ export default (props) => {
   );
 };
 
-function fetchEventData(selected, query, setEvent) {
+function fetchEventData(selected, query, setEvent, env) {
   return async () => {
     try {
-      const url = selected?.environments[0].api + `/event/get/timeFrame/month/property/env/${query}`;
+      const url = env.managerPath + `/event/get/timeFrame/month/property/env/${query}`;
       setEvent([]);
-      if (selected) {
+      if (url) {
         const data = await get(url);
         setEvent(data);
       }

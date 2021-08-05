@@ -6,11 +6,11 @@ import { get } from '../../../utils/APIUtil';
 
 
 export default () => {
-  const { selected, setSelectedConfig } = useConfig();
+  const { selected, setSelectedConfig, env } = useConfig();
   const [event, setEvent] = useState([]);
   const { spaName, propertyName } = useParams();
   const query = spaName;
-  const getEventData = fetchEventData(selected, query, setEvent, propertyName);
+  const getEventData = fetchEventData(selected, query, setEvent, propertyName, env);
 
   useEffect(() => {
     getEventData();
@@ -141,11 +141,11 @@ function getChartRange(event, maxCount, minCount, prod, i, dev, qa, stage) {
 }
 
 
-function fetchEventData(selected, query, setEvent, propertyName) {
+function fetchEventData(selected, query, setEvent, propertyName, env) {
   return async () => {
     try {
-      const url = selected?.environments[0].api + `/event/get/chart/month/spaName/env/${query}/${propertyName}`;
-      if (selected) {
+      const url = env.managerPath  + `/event/get/chart/month/spaName/env/${query}/${propertyName}`;
+      if (url) {
         const data = await get(url);
         setEvent(data);
       }
