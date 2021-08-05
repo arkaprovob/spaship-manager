@@ -1,8 +1,8 @@
-const event = require('../../models/event')
-const eventTimeTrace = require('../../models/eventTimeTrace')
+const event = require('../../../models/event')
+const eventTimeTrace = require('../../../models/eventTimeTrace')
 const EventSource = require("eventsource");
 const { uuid } = require('uuidv4');
-const config = require('../../config');
+const config = require('../../../config');
 
 var source = new EventSource(config.get("sse"));
 

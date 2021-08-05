@@ -1,4 +1,4 @@
-const event = require('../../models/event')
+const event = require('../../../models/event')
 const { uuid } = require('uuidv4');
 
 module.exports = async function saveChartProperty(req,res) {

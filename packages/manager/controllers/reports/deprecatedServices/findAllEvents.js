@@ -1,4 +1,4 @@
-const chart = require('../../models/event')
+const chart = require('../../../models/event')
 
 module.exports = async function findAllChart(req, res) {
     try {
