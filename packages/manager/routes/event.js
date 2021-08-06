@@ -78,5 +78,4 @@ router.get("/get/timeFrame/month/property/env/:propertyName", getTimeFrameForPro
 router.get("/get/search/spaName/:searchQuery", getSearchResultForSPA);
 
 
-
 module.exports = router;
