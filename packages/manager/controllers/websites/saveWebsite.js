@@ -31,8 +31,6 @@ function createWebsiteRequest(id, req) {
         websiteId: id,
         websiteName: getWebsiteName(req),
         repositoryConfigs: getRepositoryConfigs(req),
-        gitToken: getGitToken(req),
-        spas: getSpas(req),
         isActive: true,
         createdAt: currentTime,
         updatedAt: currentTime,
@@ -52,13 +50,10 @@ async function updateWebsite(req) {
     return updateResponse;
 }
 
-
 function updateWebsiteRequest(req) {
     const updateRequest = {
         websiteName: getWebsiteName(req),
-        repositoryLinks: getRepositoryConfigs(req),
-        gitToken: getGitToken(req),
-        spas: getSpas(req),
+        repositoryConfigs: getRepositoryConfigs(req),
         isActive: true,
         updatedAt: new Date()
     };
@@ -66,7 +61,7 @@ function updateWebsiteRequest(req) {
 }
 
 function getSpas(req) {
-    return req.body?.spas.map((each) => ({
+    return req.map((each) => ({
         repositoryLink: each?.repositoryLink,
         spaName: each?.spaName,
         contextPath: each?.contextPath,
@@ -74,16 +69,14 @@ function getSpas(req) {
     }));
 }
 
-
 function getRepositoryConfigs(req) {
     return req.body?.repositoryConfigs.map((each) => ({
         repositoryLink: each?.repositoryLink,
-        branch: each?.branch
+        branch: each?.branch,
+        gitToken: each.gitToken,
+        spas: getSpas(each.spas),
     }));
 }
-
-
-
 
 function getWebsiteId(req) {
     return req.body?.websiteId;
@@ -92,10 +85,6 @@ function getWebsiteId(req) {
 function getGitToken(req) {
     return req.body?.gitToken;
 }
-
-// function getRepositoryLinks(req) {
-//     return req.body?.repositoryLinks;
-// }
 
 function getWebsiteName(req) {
     return req.body?.websiteName;

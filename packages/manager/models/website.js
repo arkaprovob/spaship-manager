@@ -1,13 +1,6 @@
 const mongoose = require('mongoose')
 
 const spaSchema = new mongoose.Schema({
-    spaId: {
-        type: String,
-        //  required: true
-    },
-    repositoryLink: {
-        type: String,
-    },
     spaName: {
         type: String,
     },
@@ -16,7 +9,6 @@ const spaSchema = new mongoose.Schema({
     },
     envs: [{
         type: String,
-        required: true
     }],
 }, { _id: false });
 
@@ -27,6 +19,10 @@ const repositoryConfigs = new mongoose.Schema({
     branch: {
         type: String,
     },
+    gitToken: {
+        type: String,
+    },
+    spas: [spaSchema],
 }, { _id: false });
 
 const webstite = new mongoose.Schema({
@@ -39,11 +35,6 @@ const webstite = new mongoose.Schema({
         required: true
     },
     repositoryConfigs: [repositoryConfigs],
-    gitToken: {
-        type: String,
-        required: false
-    },
-    spas: [spaSchema],
     isActive: {
         type: Boolean,
         required: false
