@@ -23,7 +23,7 @@ module.exports = async function gitOperations(req, res) {
     repository = await gitCheckout(repository, resolvePathCreateBranch, localBranch);
     await createSPAShipTemplateRequest(req, pathFile);
     await gitOperationsCommit(repository, signature, resolvePathCreateBranch, localBranch);
-    res.send({ repo: "Git Updated Successfully", path: pathClone });
+    res.send({ repo: "Git Updated Successfully", path: path.resolve(__dirname, resolvePathCreateBranch) });
 }
 
 
