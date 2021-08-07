@@ -1,12 +1,7 @@
 var Git = require("nodegit");
 var path = require("path");
 const fs = require('fs');
-const globalBranch = "spaShipDeployment1";
-const remoteBranch = "proprod";
-const dirName = "tempWebpackDevelop101"
-const resolvePathCreateBranch = `../../../root/${dirName}/.git`;
-const pathClone = `./root/${dirName}`;
-const pathFile = `root/${dirName}/`;
+const { uuid } = require("uuidv4");
 
 const delay = millis => new Promise((resolve, reject) => {
     setTimeout(_ => resolve(), millis)
@@ -16,20 +11,24 @@ module.exports = async function gitOperations(req, res) {
     
     let repository;
     let signature = createSignature();
-
+    const directoryName = `${req.body?.websiteName}_temp_${uuid()}`;
+    const pathClone = `./root/${directoryName}`;
+    const resolvePathCreateBranch = `../../../root/${directoryName}/.git`;
+    const pathFile = `root/${directoryName}/`;
+    const localBranch = `${req.body?.websiteName}_branch_${uuid()}`;
     
-    await cloneGitRepository(req.body?.repositoryConfigs[0].repositoryLink);
-    await checkoutRemoteBranch(req.body?.repositoryConfigs[0].branch);
-    await gitCreateBranch();
-    repository = await gitCheckout(repository);
-    await createSPAShipTemplateRequest(req);
-    await gitOperationsCommit(repository, signature);
+    await cloneGitRepository(req.body?.repositoryConfigs[0].repositoryLink,  pathClone);
+    await checkoutRemoteBranch(req.body?.repositoryConfigs[0].branch, resolvePathCreateBranch);
+    await gitCreateBranch(resolvePathCreateBranch, localBranch);
+    repository = await gitCheckout(repository, resolvePathCreateBranch, localBranch);
+    await createSPAShipTemplateRequest(req, pathFile);
+    await gitOperationsCommit(repository, signature, resolvePathCreateBranch, localBranch);
     res.send({ repo: "Git Updated Successfully", path: pathClone });
 }
 
 
-async function checkoutRemoteBranch(remoteBranch) {
-    await delay(500);
+async function checkoutRemoteBranch(remoteBranch, resolvePathCreateBranch) {
+    await delay(100);
     Git.Repository.open(path.resolve(__dirname, resolvePathCreateBranch))
         .then((repo) => {
             return repo.getHeadCommit()
@@ -58,8 +57,8 @@ async function checkoutRemoteBranch(remoteBranch) {
         await delay(100);
 }
 
-async function createSPAShipTemplateRequest(req) {
-    await delay(500);
+async function createSPAShipTemplateRequest(req, pathFile) {
+    await delay(100);
     const spashipTemplate = [];
     const envs = new Set();
 
@@ -88,19 +87,17 @@ async function createSPAShipTemplateRequest(req) {
     }
 }
 
-async function gitOperationsCommit(repository, signature) {
-
+async function gitOperationsCommit(repository, signature, resolvePathCreateBranch, localBranch) {
     let referr;
     let index;
     let oid;
-
     let remoteGitURL = "ssh://git@xxxxxx/home/git/git_test_repo.git";
     let remote;
 
     Git.Repository.open(path.resolve(__dirname, resolvePathCreateBranch))
         .then(function (repo) {
             repository = repo;
-            repo.getBranch('refs/heads/' + globalBranch)
+            repo.getBranch('refs/heads/' + localBranch)
                 .then(function (reference) {
                     //checkout branch
                     console.log(`1: Checking out ${reference}`);
@@ -112,35 +109,13 @@ async function gitOperationsCommit(repository, signature) {
         .then(function (repo) {
             repository.getCurrentBranch().then(function (ref) {
                 referr = ref;
-                //console.log(referr.getBranch);
-                console.log("2: " + ref.shorthand());
+                console.log("2: Refreshing Index " + ref.shorthand());
             });
-            //repository = repo;
             return repository.refreshIndex();
         })
-        // .then(function(indexResult) {
-        //     console.log("2.9: Index Result");
-        //     index = indexResult;
-        //   //  index.removeAll(path.resolve(__dirname, '../../../root/tempWebpackDevelop/'));
-        //    //   index.read(1);
-        //   //  index.addAll();
-        //     return index.read(1);
-        //   })
-        //   .then(function() {
-        //     console.log("2.10: Index Result Remove");
-        //     return index.removeAll(path.resolve(__dirname, '../../../root/tempWebpackDevelop/'));
-        //   })
-        //   .then(function() {
-        //     console.log("2.11: Write");
-        //     return index.write();
-        //   })
-        //   .then(function() {
-        //     return index.writeTree();
-        //   })
         .then(function (indexResult) {
             console.log("3: Index Result");
             index = indexResult;
-            //    return index.read(1);
         })
         .then(function () {
             console.log("4: Add Index By Path "+path.resolve(__dirname, '../../../root/tempWebpackDevelop/'));
@@ -173,14 +148,13 @@ async function gitOperationsCommit(repository, signature) {
     return repository;
 }
 
-async function gitCheckout(repository) {
+async function gitCheckout(repository, resolvePathCreateBranch, localBranch) {
     Git.Repository.open(path.resolve(__dirname, resolvePathCreateBranch))
         .then(function (repo) {
             repository = repo;
-            repo.getBranch('refs/heads/' + globalBranch)
+            repo.getBranch('refs/heads/' + localBranch)
                 .then(function (reference) {
-                    //checkout branch
-                    console.log("1: Checking out branch " + globalBranch);
+                    console.log("1: Checking out branch " + localBranch);
                     console.log(reference);
                     return repo.checkoutRef(reference);
                 }).catch(function (e) {
@@ -190,14 +164,13 @@ async function gitCheckout(repository) {
     return repository;
 }
 
-async function gitCreateBranch() {
+async function gitCreateBranch(resolvePathCreateBranch, localBranch) {
     Git.Repository.open(path.resolve(__dirname, resolvePathCreateBranch))
         .then(function (repo) {
-            // Create a new branch on head
             return repo.getHeadCommit()
                 .then(function (commit) {
                     return repo.createBranch(
-                        globalBranch,
+                        localBranch,
                         commit,
                         0,
                         repo.defaultSignature(),
@@ -205,8 +178,8 @@ async function gitCreateBranch() {
                 });
         });
 
-    console.log(`Created Branch : ${globalBranch}`);
-    await delay(500);
+    console.log(`Created Branch : ${localBranch}`);
+    await delay(100);
 }
 
 function createSignature() {
@@ -214,39 +187,11 @@ function createSignature() {
         "Soumyadip@gmai.com");
 }
 
-async function cloneGitRepository(repositoryLink) {
+async function cloneGitRepository(repositoryLink, pathClone) {
     console.log("Cloning Repository "+repositoryLink);
     return Git.Clone(repositoryLink, pathClone)
         .catch(function (err) { console.log(err); });
 }
-
-// Git.Clone("https://github.com/SoumyadipXD/spaship-spas", "./root/tempWebpackDeploy")
-//     .catch(function (err) { console.log(err); });
-
-// Git.Repository.open(path.resolve(__dirname, '../../../root/tempWebpackDevelop/.git'))
-//     .catch(function () {
-//         console.log('arguments =>', arguments);
-//     })
-//     .then(function (repoResult) {
-//         repo = repoResult;
-//         console.log('repo =>', repo.getStatus);
-//         console.log(repo);
-//     })
-//     .catch(function () {
-//         console.log('arguments 2 =>', arguments);
-//     })
-
-
-
-// repo.getBranch('refs/remotes/origin/' + branchName)
-// .then(function(reference) {
-//     //checkout branch
-//     return repo.checkoutRef(reference);
-// });
-
-
-//  var result = Branch.isCheckedOut("develop");
-
 
 function error() {
     res.send(JSON.stringify({ repo: "Error" }));
