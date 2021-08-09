@@ -4,17 +4,20 @@ const { uuid } = require('uuidv4');
 module.exports = async function saveWebsite(req, res) {
     if (getWebsiteId(req)) {
         const updatedResponse = await updateWebsite(req);
-        res.send(updatedResponse);
+        return updatedResponse;
+      //  res.send(updatedResponse);
     }
     let websiteId = getGeneratedSpaConfigId();
     let websiteRequest = createWebsiteRequest(websiteId, req)
     const createdResponse = await createWebsite(websiteRequest);
-    res.send(createdResponse);
+    return createdResponse;
+    //res.send(createdResponse);
 }
 
 async function createWebsite(websiteRequest) {
     try {
         const saveResponse = await websiteRequest.save();
+        console.log(saveResponse)
         return saveResponse;
     } catch (e) {
         return { "Error": e };

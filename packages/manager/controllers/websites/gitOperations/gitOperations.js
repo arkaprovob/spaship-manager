@@ -2,13 +2,15 @@ var Git = require("nodegit");
 var path = require("path");
 const fs = require('fs');
 const { uuid } = require("uuidv4");
+const zip = require('zip-a-folder').zip;
+const saveWebsite = require("../saveWebsite");
 
 const delay = millis => new Promise((resolve, reject) => {
     setTimeout(_ => resolve(), millis)
 });
 
 module.exports = async function gitOperations(req, res) {
-    
+
     let repository;
     let signature = createSignature();
     const directoryName = `${req.body?.websiteName}_temp_${uuid()}`;
@@ -16,16 +18,21 @@ module.exports = async function gitOperations(req, res) {
     const resolvePathCreateBranch = `../../../root/${directoryName}/.git`;
     const pathFile = `root/${directoryName}/`;
     const localBranch = `${req.body?.websiteName}_branch_${uuid()}`;
-    
-    await cloneGitRepository(req.body?.repositoryConfigs[0].repositoryLink,  pathClone);
+
+    await cloneGitRepository(req.body?.repositoryConfigs[0].repositoryLink, pathClone);
     await checkoutRemoteBranch(req.body?.repositoryConfigs[0].branch, resolvePathCreateBranch);
     await gitCreateBranch(resolvePathCreateBranch, localBranch);
     repository = await gitCheckout(repository, resolvePathCreateBranch, localBranch);
     await createSPAShipTemplateRequest(req, pathFile);
     await gitOperationsCommit(repository, signature, resolvePathCreateBranch, localBranch);
-    res.send({ repo: "Git Updated Successfully", path: path.resolve(__dirname, resolvePathCreateBranch) });
+    await zipFiles(directoryName);
+    const websiteResponse = await saveWebsite(req, res);
+    res.send({ actionStatus: "Git Actions Performed Successfully", path: path.resolve(__dirname, `./../../../root/${directoryName}.zip`), websiteResponse : websiteResponse });
 }
 
+async function zipFiles(directoryName) {
+    await zip(path.resolve(__dirname, `./../../../root/${directoryName}`), path.resolve(__dirname, `./../../../root/${directoryName}.zip`));
+}
 
 async function checkoutRemoteBranch(remoteBranch, resolvePathCreateBranch) {
     await delay(100);
@@ -54,7 +61,7 @@ async function checkoutRemoteBranch(remoteBranch, resolvePathCreateBranch) {
         .catch((err) => {
             console.log(err);
         });
-        await delay(100);
+    await delay(100);
 }
 
 async function createSPAShipTemplateRequest(req, pathFile) {
@@ -118,7 +125,7 @@ async function gitOperationsCommit(repository, signature, resolvePathCreateBranc
             index = indexResult;
         })
         .then(function () {
-            console.log("4: Add Index By Path "+path.resolve(__dirname, '../../../root/tempWebpackDevelop/'));
+            console.log("4: Add Index By Path " + path.resolve(__dirname, '../../../root/tempWebpackDevelop/'));
             return index.addAll();
         })
         .then(function () {
@@ -142,6 +149,26 @@ async function gitOperationsCommit(repository, signature, resolvePathCreateBranc
             console.log("9 : Parent Commit Hash " + parent);
             return repository.createCommit("HEAD", signature, signature, "Commit with Date : " + new Date(), oid, [parent]);
         })
+
+        // Add a new remote
+        // .then(function () {
+        //     return Git.Remote.create(repository, "origin",
+        //         "git@github.com:SoumyadipXD/spaship-spas.git")
+        //         .then(function (remoteResult) {
+        //             remote = remoteResult;
+        //             // Create the push object for this remote
+        //             return remote.push(
+        //                 [`refs/heads/master:refs/heads/${localBranch}`],
+        //                 {
+        //                     callbacks: {
+        //                         credentials: function (url, userName) {
+        //                             return Git.Cred.sshKeyFromAgent(userName);
+        //                         }
+        //                     }
+        //                 }
+        //             );
+        //         });
+        // })
         .catch(function (err) {
             console.log(err.toString());
         });
@@ -188,7 +215,7 @@ function createSignature() {
 }
 
 async function cloneGitRepository(repositoryLink, pathClone) {
-    console.log("Cloning Repository "+repositoryLink);
+    console.log("Cloning Repository " + repositoryLink);
     return Git.Clone(repositoryLink, pathClone)
         .catch(function (err) { console.log(err); });
 }

@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { ActionGroup, Button, Form, FormGroup, Modal, TextInput } from "@patternfly/react-core";
-import { IConfig, IEnvironment, SPAConfigutation } from "../../config";
-import NewPropertyEnvironment from "./NewPropertyEnvironment";
-import NewRepositoryConfigs from "./NewRepositoryConfigs";
-import { useBetween } from "use-between";
-import Select from "react-select";
 import {
-  Card,
+  Button, Card,
   CardBody,
-  CardHeader, CardTitle
+  CardHeader, CardTitle, Form, FormGroup, Modal, TextInput
 } from "@patternfly/react-core";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import Select from "react-select";
+import { IConfig, SPAConfigutation } from "../../config";
 import { post } from "../../utils/APIUtil";
 
 interface IProps {
@@ -69,7 +65,7 @@ export default (props: IProps) => {
 
 
 
-  const  handleWebsiteNameChange = (value: string) => {
+  const handleWebsiteNameChange = (value: string) => {
     setWebsiteName(value);
     console.log("Website Name");
     console.log(websiteName);
@@ -114,6 +110,7 @@ export default (props: IProps) => {
     }
     if (treePath.length > 0) {
       const tempPath = [];
+      const tempSpaFilePathRequest = [];
       let i = 1;
       for (let item of treePath) {
         if (item.type == 'tree') {
@@ -124,11 +121,15 @@ export default (props: IProps) => {
             envs: ['prod', 'develop', 'stage'],
             //isChecked : true,
           }
+          const spaFilePathRequestItem = { spaName: item.path, contextPath: item.path, envs: ['prod', 'develop', 'stage'], isActive: false, envStr: 'prod,dev,stage'};
+          tempSpaFilePathRequest.push(spaFilePathRequestItem);
           tempPath.push(pathRequest);
         }
       }
+      setSpaFilePathRequest(tempSpaFilePathRequest);
       setFilePath(tempPath);
       console.log(filePath);
+      console.log(spaFilePathRequest);
     }
 
   }, [event, repositoryLink, treePath]);
@@ -165,31 +166,32 @@ export default (props: IProps) => {
   };
 
   const onAddingItem = (i: any) => (event: any) => {
-    let found = false;
     for (let j = 0; j < spaFilePathRequest.length; j++) {
       console.log(spaFilePathRequest[j].spaName);
       console.log(filePath[i].name);
       if (spaFilePathRequest[j].spaName == filePath[i].name) {
-        found = true;
-        const response = spaFilePathRequest.filter(file => file.spaName !== filePath[i].name);
-        setSpaFilePathRequest(response);
+        if (spaFilePathRequest[j].isActive == false)
+          spaFilePathRequest[j].isActive = true;
+        else
+          spaFilePathRequest[j].isActive = false;
+
         break;
       }
     }
-    if (found === false) {
-      setSpaFilePathRequest([...spaFilePathRequest, { spaName: filePath[i].name, contextPath: filePath[i].context, envs: filePath[i].envs }])
-      console.log("File Path Request");
-      console.log(spaFilePathRequest);
-    }
     console.log(spaFilePathRequest);
-    found = false;
   }
 
-
   const onAddingContext = (i: any) => (event: any) => {
-    console.log('onAddingContext');
+    spaFilePathRequest[i].contextPath=event;
+    console.log(spaFilePathRequest);
+  }
+
+  const onAddingEnvs = (i: any) => (event: any) => {
     console.log(i);
     console.log(event);
+    spaFilePathRequest[i].envStr= event;
+    spaFilePathRequest[i].envs= event.split(",");
+    console.log(spaFilePathRequest);
   }
 
   return (
@@ -297,6 +299,7 @@ export default (props: IProps) => {
                       <br></br>
                       {filePath.map((filePathItem, i) => {
                         return (
+                          
                           <tr key={i + 1}>
                             <td><b>{i + 1}. &nbsp;</b></td>
                             <td>
@@ -308,12 +311,12 @@ export default (props: IProps) => {
                               </div>
                             </td>
 
-
                             <td>
                               <div >
                                 <TextInput
                                   isRequired
                                   type="text"
+                                  value={spaFilePathRequest[i].context}
                                   id="horizontal-form-api"
                                   aria-describedby="horizontal-form-name-helper"
                                   name="horizontal-form-name"
@@ -325,12 +328,19 @@ export default (props: IProps) => {
 
                             <td>
                               <div >
-                                <label>
-                                  <span>&nbsp;&nbsp;{filePathItem.envs} </span>
-                                </label>
+                              <TextInput
+                                  isRequired
+                                  type="text"
+                                  value={spaFilePathRequest[i].env}
+                                  id="horizontal-form-envs"
+                                  aria-describedby="horizontal-form-envs-helper"
+                                  name="horizontal-form-envs"
+                                  onChange={onAddingEnvs(i)}
+                                />
                               </div>
                             </td>
                           </tr>
+                     
                         )
                       })}
                     </tbody>
@@ -347,11 +357,11 @@ export default (props: IProps) => {
 };
 async function sendRequestToActions(websiteRequest: { websiteName: string; repositoryConfigs: { repositoryLink: string; branch: string; gitToken: string; spas: any[]; }[]; }) {
   try {
-    const url = "http://localhost:2345/api/v1/website";
-    if (url) {
-      const data = await post<any>(url, websiteRequest);
-      console.log(data);
-    }
+    // const url = "http://localhost:2345/api/v1/website";
+    // if (url) {
+    //   const data = await post<any>(url, websiteRequest);
+    //   console.log(data);
+    // }
   } catch (e) {
     console.log(e);
   }
