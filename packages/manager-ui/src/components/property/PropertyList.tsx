@@ -49,10 +49,10 @@ export default () => {
     <Page header={<Header />}>
 
       <PageSection variant={PageSectionVariants.darker}>
-        <Title headingLevel="h1">Choose a property</Title>
+        <Title headingLevel="h1">Choose a website</Title>
       </PageSection>
       <PageSection variant={PageSectionVariants.default}>
-        <Gallery hasGutter style={{ width: "70%" }}>
+        <Gallery hasGutter style={{ width: "100%" }}>
           {websitelist.map((website: any) => (
             <GalleryItem key={`property-${website.id}`}>
               <Property

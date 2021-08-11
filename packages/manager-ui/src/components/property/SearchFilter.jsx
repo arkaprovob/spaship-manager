@@ -7,7 +7,7 @@ import useConfig from "../../hooks/useConfig";
 import { get } from "../../utils/APIUtil";
 
 export default (props) => {
-  const { selected, setSelectedConfig, env } = useConfig();
+  const { selected, setSelectedConfig, env, setWebsiteConfig } = useConfig();
   const [event, setEvent] = useState([]);
   const history = useHistory();
   const [inputValue, setValue] = useState('');
@@ -24,6 +24,9 @@ export default (props) => {
   const handleChange = value => {
     setSelectedValue(value);
     console.log(value);
+
+    const websiteConfig = { name: value.propertyName };
+    setWebsiteConfig(websiteConfig);
     history.push(`/dashboard/${value.propertyName}/spaName/${value.spaName}`);
   }
 
