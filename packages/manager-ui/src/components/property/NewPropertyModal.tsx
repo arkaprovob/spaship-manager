@@ -47,6 +47,8 @@ const spaConfigutationTemplate: SPAConfigutation = {
 
 export default (props: IProps) => {
   const { isModalOpen, onClose, onSubmit } = props;
+  const [responseModal, setResponseModal] = useState(false);
+
   const [config, setConfig] = useState<IConfig>(configTemplate);
   const [spaConfigutation, setSpaConfigutation] = useState<SPAConfigutation>(spaConfigutationTemplate);
   const [validated, setValidated] = useState<"success" | "error" | "default">("default");
@@ -57,6 +59,8 @@ export default (props: IProps) => {
   const [branch, setBranch] = useState("");
   const [token, setToken] = useState("");
   const [spaFilePathRequest, setSpaFilePathRequest] = useState<any[]>([]);
+
+  const [response, setResponse] = useState({});
 
   const [treePath, setTreePath] = useState<any[]>([]);
   const [filePath, setFilePath] = useState<any[]>([]);
@@ -75,6 +79,8 @@ export default (props: IProps) => {
   const handleConfirm = () => {
     console.log("Submit");
 
+    const spaResponse = spaFilePathRequest.filter(item => item.isActive === true)
+
     const websiteRequest = {
       websiteName: websiteName,
       repositoryConfigs: [
@@ -82,21 +88,20 @@ export default (props: IProps) => {
           repositoryLink: repositoryLink,
           branch: branch,
           gitToken: token,
-          spas: spaFilePathRequest
+          spas: spaResponse
         }
       ]
     };
 
     console.log(JSON.stringify(websiteRequest));
     sendRequestToActions(websiteRequest);
+    //onClose();
   };
 
   const handleClose = () => {
     setConfig(configTemplate);
     onClose();
   };
-
-
 
   useEffect(() => {
     if (repositoryLink.length > 23) {
@@ -121,7 +126,7 @@ export default (props: IProps) => {
             envs: ['prod', 'develop', 'stage'],
             //isChecked : true,
           }
-          const spaFilePathRequestItem = { spaName: item.path, contextPath: item.path, envs: ['prod', 'develop', 'stage'], isActive: false, envStr: 'prod,dev,stage'};
+          const spaFilePathRequestItem = { spaName: item.path, contextPath: item.path, envs: ['prod', 'develop', 'stage'], isActive: false, envStr: 'prod,dev,stage' };
           tempSpaFilePathRequest.push(spaFilePathRequestItem);
           tempPath.push(pathRequest);
         }
@@ -133,8 +138,6 @@ export default (props: IProps) => {
     }
 
   }, [event, repositoryLink, treePath]);
-
-
 
 
 
@@ -182,17 +185,21 @@ export default (props: IProps) => {
   }
 
   const onAddingContext = (i: any) => (event: any) => {
-    spaFilePathRequest[i].contextPath=event;
+    spaFilePathRequest[i].contextPath = event;
     console.log(spaFilePathRequest);
   }
 
   const onAddingEnvs = (i: any) => (event: any) => {
     console.log(i);
     console.log(event);
-    spaFilePathRequest[i].envStr= event;
-    spaFilePathRequest[i].envs= event.split(",");
+    spaFilePathRequest[i].envStr = event;
+    spaFilePathRequest[i].envs = event.split(",");
     console.log(spaFilePathRequest);
   }
+
+  const handleModalToggle = () => {
+    setResponseModal(!responseModal);
+  };
 
   return (
     <Modal
@@ -283,7 +290,7 @@ export default (props: IProps) => {
                 </FormGroup>
                 <br></br>
                 <FormGroup
-                  label={`SPA Pathas`}
+                  label={`SPA Paths`}
                   isRequired
                   fieldId="horizontal-form-token"
                   helperText={`Please select the SPAs`}
@@ -299,7 +306,7 @@ export default (props: IProps) => {
                       <br></br>
                       {filePath.map((filePathItem, i) => {
                         return (
-                          
+
                           <tr key={i + 1}>
                             <td><b>{i + 1}. &nbsp;</b></td>
                             <td>
@@ -328,7 +335,7 @@ export default (props: IProps) => {
 
                             <td>
                               <div >
-                              <TextInput
+                                <TextInput
                                   isRequired
                                   type="text"
                                   value={spaFilePathRequest[i].env}
@@ -340,7 +347,7 @@ export default (props: IProps) => {
                               </div>
                             </td>
                           </tr>
-                     
+
                         )
                       })}
                     </tbody>
@@ -357,11 +364,12 @@ export default (props: IProps) => {
 };
 async function sendRequestToActions(websiteRequest: { websiteName: string; repositoryConfigs: { repositoryLink: string; branch: string; gitToken: string; spas: any[]; }[]; }) {
   try {
-    // const url = "http://localhost:2345/api/v1/website";
-    // if (url) {
-    //   const data = await post<any>(url, websiteRequest);
-    //   console.log(data);
-    // }
+    const url = "http://localhost:2345/api/v1/website";
+    if (url) {
+      const data = await post<any>(url, websiteRequest);
+      console.log(data);
+      alert(`SPA has been deployed, ${data.path}`);
+    }
   } catch (e) {
     console.log(e);
   }

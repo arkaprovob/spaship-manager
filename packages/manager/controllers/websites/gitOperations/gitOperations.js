@@ -31,6 +31,7 @@ module.exports = async function gitOperations(req, res) {
 }
 
 async function zipFiles(directoryName) {
+    //await delay(100);
     await zip(path.resolve(__dirname, `./../../../root/${directoryName}`), path.resolve(__dirname, `./../../../root/${directoryName}.zip`));
 }
 
@@ -149,26 +150,7 @@ async function gitOperationsCommit(repository, signature, resolvePathCreateBranc
             console.log("9 : Parent Commit Hash " + parent);
             return repository.createCommit("HEAD", signature, signature, "Commit with Date : " + new Date(), oid, [parent]);
         })
-
-        // Add a new remote
-        // .then(function () {
-        //     return Git.Remote.create(repository, "origin",
-        //         "git@github.com:SoumyadipXD/spaship-spas.git")
-        //         .then(function (remoteResult) {
-        //             remote = remoteResult;
-        //             // Create the push object for this remote
-        //             return remote.push(
-        //                 [`refs/heads/master:refs/heads/${localBranch}`],
-        //                 {
-        //                     callbacks: {
-        //                         credentials: function (url, userName) {
-        //                             return Git.Cred.sshKeyFromAgent(userName);
-        //                         }
-        //                     }
-        //                 }
-        //             );
-        //         });
-        // })
+ 
         .catch(function (err) {
             console.log(err.toString());
         });

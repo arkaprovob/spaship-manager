@@ -12,7 +12,7 @@ import NewProperty from "./NewProperty";
 import Property from "./Property";
 
 export default () => {
-  const { configs, selected, setSelectedConfig, addConfig, removeConfig } = useConfig();
+  const { configs, selected, setSelectedConfig, addConfig, removeConfig, env } = useConfig();
   const [event, setEvent] = useState([]);
   const history = useHistory();
 
@@ -29,7 +29,7 @@ export default () => {
     history.push("/applications");
   };
 
-  const getEventData = fetchEventData(selected, setEvent);
+  const getEventData = fetchEventData(selected, setEvent, env);
 
   useEffect(() => {
     getEventData();
@@ -46,7 +46,7 @@ export default () => {
       <PageSection variant={PageSectionVariants.default}>
         <Gallery hasGutter style={{ width: "70%" }}>
           {sortConfigs.map((config) => (
-            <GalleryItem key={`property-${config.name}`}>
+            <GalleryItem key={`property-${event.idd}`}>
               <Property
                 config={config}
                 selectedName={selected?.name}
@@ -91,10 +91,10 @@ function getSortConfigs(configs: IConfig[]) {
   });
 }
 
-function fetchEventData(selected: IConfig | undefined, setEvent : any) {
+function fetchEventData(selected: IConfig | undefined, setEvent : any, env : any) {
   return async () => {
     try {
-      const url = selected?.environments[0].api + "/event/get/all/property/count";
+      const url =  env.managerPath + "/event/get/all/property/count";
       setEvent([]);
       if (selected) {
         const data = await get<any>(url);
