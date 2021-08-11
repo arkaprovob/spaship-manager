@@ -7,7 +7,7 @@ import useConfig from "../../hooks/useConfig";
 import { get } from "../../utils/APIUtil";
 
 export default (props) => {
-  const { selected, setSelectedConfig } = useConfig();
+  const { selected, setSelectedConfig, env } = useConfig();
   const [event, setEvent] = useState([]);
   const history = useHistory();
   const [inputValue, setValue] = useState('');
@@ -34,12 +34,15 @@ export default (props) => {
   }
 
   const loadOptions = async (inputValue) => {
-    const url = selected?.environments[0].api + `/event/get/search/spaName/${inputValue}`;
+    if (inputValue.length == 0) {
+      this.inputValue = ""
+    }
+    const url = env.managerPath + `/event/get/search/spaName/${inputValue}`;
     const searchedResponse = await get(url);
     return searchedResponse;
   };
   const colourStyles = {
-    control: styles => ({ ...styles, backgroundColor: 'white' , width: 350,}),
+    control: styles => ({ ...styles, backgroundColor: 'white', width: 350, }),
     option: (styles, { isFocused, isSelected }) => {
       const color = 'black';
       return {
@@ -60,7 +63,7 @@ export default (props) => {
       </components.DropdownIndicator>
     );
   };
-  
+
 
   return (
     <div>
@@ -68,16 +71,16 @@ export default (props) => {
         cacheOptions
         defaultOptions
         value={selectedValue}
-        components={{  DropdownIndicator }}
-        getOptionLabel={e => e.spaName + ' (' +  e.propertyName + ') '  }
-        getOptionValue={e => e.spaName + ' (' +  e.propertyName + ') '  }
+        components={{ DropdownIndicator }}
+        getOptionLabel={e => e.spaName + ' (' + e.propertyName + ') '}
+        getOptionValue={e => e.spaName + ' (' + e.propertyName + ') '}
         loadOptions={loadOptions}
         onInputChange={handleInputChange}
         onChange={handleChange}
         onLoad={onLoadHandleChange}
         styles={colourStyles}
         placeholder="Search SPA"
-        noOptionsMessage={({selectedValue}) => !selectedValue ? 'No results found' : 'No results found'} 
+        noOptionsMessage={({ selectedValue }) => !selectedValue ? 'No results found' : 'No results found'}
       />
     </div>
   );

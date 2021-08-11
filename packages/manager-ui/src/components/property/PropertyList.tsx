@@ -1,4 +1,6 @@
 import { Gallery, GalleryItem, Page, PageSection, PageSectionVariants, Title } from "@patternfly/react-core";
+import { count } from "console";
+import { config } from "process";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { IConfig } from "../../config";
@@ -12,27 +14,33 @@ import NewProperty from "./NewProperty";
 import Property from "./Property";
 
 export default () => {
-  const { configs, selected, setSelectedConfig, addConfig, removeConfig, env } = useConfig();
-  const [event, setEvent] = useState([]);
+  const { configs, selected, setSelectedConfig, setWebsiteConfig, addConfig, removeConfig, env } = useConfig();
+  const [event, setEvent] = useState<any>([]);
+  const [websitelist, setWebsiteList] = useState<any>([]);
   const history = useHistory();
 
   const handleSubmit = (conf: IConfig) => {
-    addConfig(conf);
+    // addConfig(conf);
   };
 
   const handleRemove = (conf: IConfig) => {
     removeConfig(conf.name);
   };
 
-  const onSelect = async (conf: IConfig) => {
-    await setSelectedConfig(conf);
-    history.push("/applications");
+  const onSelect = async (conf: any) => {
+  //  console.log(conf);
+    const websiteConfig = { name: conf.websiteName };
+    await setWebsiteConfig(websiteConfig);
+    history.push(`/dashboard/property/${conf.websiteName}`);
   };
 
-  const getEventData = fetchEventData(selected, setEvent, env);
+  const getEventData = fetchEventData(setEvent, env);
+  const getWebsiteData = fetchWebsiteData(setWebsiteList, env);
 
   useEffect(() => {
     getEventData();
+    getWebsiteData();
+    console.log(websitelist);
   }, [selected]);
 
   const sortConfigs = getSortConfigs(configs);
@@ -45,10 +53,10 @@ export default () => {
       </PageSection>
       <PageSection variant={PageSectionVariants.default}>
         <Gallery hasGutter style={{ width: "70%" }}>
-          {sortConfigs.map((config) => (
-            <GalleryItem key={`property-${event.idd}`}>
+          {websitelist.map((website: any) => (
+            <GalleryItem key={`property-${website.id}`}>
               <Property
-                config={config}
+                config={website}
                 selectedName={selected?.name}
                 event={event}
                 onSelect={onSelect}
@@ -74,7 +82,7 @@ export default () => {
         <br></br>
         <LatestActivities />
       </PageSection>
-      
+
     </Page>
   );
 };
@@ -91,14 +99,35 @@ function getSortConfigs(configs: IConfig[]) {
   });
 }
 
-function fetchEventData(selected: IConfig | undefined, setEvent : any, env : any) {
+function fetchEventData(setEvent: any, env: any) {
   return async () => {
     try {
-      const url =  env.managerPath + "/event/get/all/property/count";
+      const url = env.managerPath + "/event/get/all/property/count";
+
       setEvent([]);
-      if (selected) {
+      if (url) {
         const data = await get<any>(url);
+        console.log(data);
         setEvent(data);
+      }
+
+    } catch (e) {
+      console.log(e);
+    }
+  };
+}
+
+
+
+function fetchWebsiteData(setWebsiteList: any, env: any) {
+  return async () => {
+    try {
+      const url = env.managerPath + "/website/list";
+      setWebsiteList([]);
+      if (url) {
+        const data = await get<any>(url);
+        console.log(data);
+        setWebsiteList(data);
       }
 
     } catch (e) {

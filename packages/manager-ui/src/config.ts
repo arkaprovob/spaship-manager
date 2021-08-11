@@ -29,3 +29,8 @@ export interface SPAConfig {
   contextPath?: string;
   envs?: string[]
 }
+
+
+export interface WebsiteConfig {
+  name: string;
+}

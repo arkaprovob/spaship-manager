@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
-import { IConfig } from "../config";
+import { IConfig, WebsiteConfig } from "../config";
 
 const configsKey = "spaship-configs";
 const selectedKey = "spaship-selected-config";
+const websiteKey = "spaship-website-config";
 
 const useConfig = () => {
   const [configs, setConfigs] = useState<IConfig[]>((window as any).SPAship.configs);
   const [selected, setSelected] = useState<IConfig>();
   const [env, setEnv] = useState<any>((window as any).SPAship.env);
+  const [website, setWebsite] = useState<string>("");
 
   const saveStorage = (key: string, value: string) => {
     try {
@@ -49,6 +51,14 @@ const useConfig = () => {
     saveStorage(selectedKey, conf.name);
   };
 
+  const setWebsiteConfig = (conf: WebsiteConfig) => {
+    console.log(conf);
+    setWebsite(conf.name);
+    saveStorage(websiteKey, conf.name);
+    console.log("Website");
+    console.log(website);
+  };
+
   useEffect(() => {
     const localConfigsJSON = localStorage.getItem(configsKey);
     if (localConfigsJSON !== null) {
@@ -63,21 +73,25 @@ const useConfig = () => {
       });
       setConfigs(all);
     }
-  }, [configs, env]);
+  }, [configs, env, website]);
 
   useEffect(() => {
     const selectedName = localStorage.getItem(selectedKey);
+    const selectedWebsite = localStorage.getItem(websiteKey);
     const selectedConfig = configs.find((conf) => conf.name === selectedName);
     setSelected(selectedConfig);
+    setWebsite(selectedWebsite || "");
   }, [configs]);
 
   return {
     configs,
     selected,
     env,
+    website,
     setSelectedConfig,
     addConfig,
     removeConfig,
+    setWebsiteConfig,
   };
 };
 

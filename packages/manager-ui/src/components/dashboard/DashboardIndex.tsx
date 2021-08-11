@@ -14,7 +14,7 @@ import { Button, Level, LevelItem } from "@patternfly/react-core";
 import SearchFilter from "../property/SearchFilter";
 
 export default () => {
-  const { configs, selected, setSelectedConfig, addConfig, removeConfig } = useConfig();
+  const { configs, selected, setSelectedConfig, addConfig, removeConfig, env } = useConfig();
   const { propertyName } = useParams<{ propertyName: string }>();
   const [event, setEvent] = useState([]);
   const history = useHistory();
@@ -27,7 +27,7 @@ export default () => {
     history.push(`/dashboard/${propertyName}/spaName/${spaName}`);
   };
 
-  const getEventData = fetchEventData(selected, propertyName, setEvent);
+  const getEventData = fetchEventData(selected, propertyName, setEvent, env);
 
   useEffect(() => {
     getEventData();
@@ -92,13 +92,14 @@ export default () => {
   );
 };
 
-function fetchEventData(selected: IConfig | undefined, propertyName: string, setEvent: any) {
+function fetchEventData(selected: IConfig | undefined, propertyName: string, setEvent: any, env: any) {
   return async () => {
     try {
-      const url = selected?.environments[0].api + `/event/get/${propertyName}/count/property/spaname`;
+      const url = env.managerPath + `/event/get/${propertyName}/count/property/spaname`;
       setEvent([]);
-      if (selected) {
+      if (url) {
         const data = await get<any>(url);
+        console.log(data);
         setEvent(data);
       }
     } catch (e) {

@@ -77,10 +77,7 @@ export default (props: IProps) => {
 
 
   const handleConfirm = () => {
-    console.log("Submit");
-
     const spaResponse = spaFilePathRequest.filter(item => item.isActive === true)
-
     const websiteRequest = {
       websiteName: websiteName,
       repositoryConfigs: [
@@ -92,10 +89,9 @@ export default (props: IProps) => {
         }
       ]
     };
-
     console.log(JSON.stringify(websiteRequest));
     sendRequestToActions(websiteRequest);
-    //onClose();
+    onClose();
   };
 
   const handleClose = () => {

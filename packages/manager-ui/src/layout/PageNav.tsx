@@ -8,7 +8,7 @@ import Namespace from "./Namespace";
 import useConfig from "../hooks/useConfig";
 
 export default () => {
-  const { configs, selected, setSelectedConfig, addConfig, removeConfig } = useConfig();
+  const { configs, selected, website, setSelectedConfig, addConfig, removeConfig } = useConfig();
   return (
     <Stack height="100%">
       <StackItem>
@@ -20,13 +20,19 @@ export default () => {
       <StackItem isFilled>
         <Nav aria-label="Nav" theme="light" variant="default">
           <NavList>
-            <NavItem itemId={0} isActive={!!useRouteMatch(`/dashboard/property/${selected?.name}`)} disabled={true}>
-              <Link to={`/dashboard/property/${selected?.name}`}>
+            <NavItem itemId={0} isActive={true} disabled={true}>
+              {/* <Link to={`/dashboard/property/${website?.name}`}> */}
+                <TopologyIcon />
+                Dashboard
+              {/* </Link> */}
+            </NavItem>
+            {/* <NavItem itemId={0} isActive={!!useRouteMatch(`/dashboard/property/${website?.name}`)} disabled={true}>
+              <Link to={`/dashboard/property/${website?.name}`}>
                 <TopologyIcon />
                 Dashboard
               </Link>
-            </NavItem>
-            <NavItem itemId={1} isActive={!!useRouteMatch("/applications")}>
+            </NavItem> */}
+            {/* <NavItem itemId={1} isActive={!!useRouteMatch("/applications")}>
               <Link to={`/applications`}>
                 <ApplicationsIcon />
                 Applications
@@ -43,7 +49,7 @@ export default () => {
                 <ServerIcon />
                 Environments
               </Link>
-            </NavItem>
+            </NavItem> */}
           </NavList>
         </Nav>
       </StackItem>
