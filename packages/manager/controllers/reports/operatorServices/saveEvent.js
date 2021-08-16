@@ -1,15 +1,18 @@
 const event = require('../../../models/event')
 const { uuid } = require('uuidv4');
+const sse = require('../../notifications/sseProducer')
 
 module.exports = async function saveChartProperty(req,res) {
-    if (getChartId(req)) {
-        const updatedResponse = await updateEventConfig(req);
-        res.send(updatedResponse);
-    }
-    let id =await getGeneratedEventId();
-    let chart = await createEventRequest(id, req)
-    const createdResponse = await createEvent(chart);
-    res.send(createdResponse);
+    // if (getChartId(req)) {
+    //     const updatedResponse = await updateEventConfig(req);
+    //     res.send(updatedResponse);
+    // }
+    // let id =await getGeneratedEventId();
+    // let chart = await createEventRequest(id, req)
+    // const createdResponse = await createEvent(chart);
+    // res.send(createdResponse);
+    
+    res.send({});
 }
 
 async function createEvent(event) {

@@ -32,7 +32,6 @@ export default (props) => {
 
 
   const onLoadHandleChange = () => {
-
     history.push(`/dashboard/one.redhat.com/spaName/home`);
   }
 

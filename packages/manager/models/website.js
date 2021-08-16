@@ -1,6 +1,12 @@
 const mongoose = require('mongoose')
 
 const spaSchema = new mongoose.Schema({
+    ownerEmail: {
+        type: String,
+    },
+    ownerName: {
+        type: String,
+    },
     spaName: {
         type: String,
     },
@@ -25,7 +31,8 @@ const repositoryConfigs = new mongoose.Schema({
     spas: [spaSchema],
 }, { _id: false });
 
-const webstite = new mongoose.Schema({
+
+const website = new mongoose.Schema({
     websiteId: {
         type: String,
         required: true
@@ -49,4 +56,4 @@ const webstite = new mongoose.Schema({
     },
 })
 
-module.exports = mongoose.model('webstite', webstite)
+module.exports = mongoose.model('website', website)
