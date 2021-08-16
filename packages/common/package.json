@@ -1,0 +1,35 @@
+{
+  "name": "@spaship/common",
+  "description": "A set of common utilities used by other SPAship components.",
+  "version": "0.14.0",
+  "author": "mclayton@redhat.com",
+  "homepage": "https://github.com/spaship/spaship/tree/master/packages/common#readme",
+  "bugs": "https://github.com/spaship/spaship/issues",
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:spaship/spaship.git",
+    "directory": "packages/common"
+  },
+  "scripts": {
+    "test": "../../node_modules/.bin/jest --restoreMocks"
+  },
+  "dependencies": {
+    "ajv": "^8.0.0",
+    "express-pino-logger": "^6.0.0",
+    "js-yaml": "^4.0.0",
+    "lodash": "^4.17.15",
+    "nconf": "^0.11.0",
+    "pino": "^6.0.0"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "pino-pretty": "5.1.0"
+  }
+}
