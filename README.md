@@ -12,11 +12,8 @@ To deploy: create an archive by zipping the contents of a directory (let's call 
 
 SPAship consists of a few packages, found inside the `packages` directory.
 
-- **CLI** - the `spaship` command-line interface
-- **Router** - a service for dynamically proxying requests to SPAs, or to remote systems
-- **Manager** - a web UI for managing SPAs
-- **API** - an API for deploying SPAs
-- **Common** - common utility functions for reading/writing config files, etc
+- **Manager** - backend system for managing SPA Workflow
+- **Manager UI** - a web UI for managing SPAs
 
 ## Testing
 
