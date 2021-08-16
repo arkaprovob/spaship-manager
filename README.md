@@ -4,9 +4,7 @@ SPAship is an early-stages Single-Page App deployment and hosting platform.
 
 ## Getting started
 
-To install SPAship's command-line interface: `npm install @spaship/cli` adding `-g` installs the package globally.
-To initialize a project: `spaship init` this will create a `spaship.yml` file based on your answers to the prompts.
-To deploy: create an archive by zipping the contents of a directory (let's call our file "Archive.zip" and target environment dev), then `spaship deploy Archive.zip --env=dev`
+v`
 
 ## Packages
 
@@ -14,6 +12,12 @@ SPAship consists of a few packages, found inside the `packages` directory.
 
 - **Manager** - backend system for managing SPA Workflow
 - **Manager UI** - a web UI for managing SPAs
+
+## Set Up Env
+```
+npm install
+npm run start
+```
 
 ## Testing
 
