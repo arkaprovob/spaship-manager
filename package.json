@@ -26,9 +26,7 @@
     "postinstall": "npm run bootstrap",
     "test": "CI=true npm run lerna run test",
     "dev": "bash scripts/dev.sh",
-    "lerna": "./node_modules/.bin/lerna",
-    "autorelease": "npm run lerna -- version --include-merged-tags --conventional-commits --create-release=github",
-    "autopublish": "npm run lerna publish from-git"
+    "lerna": "./node_modules/.bin/lerna"
   },
   "husky": {
     "hooks": {

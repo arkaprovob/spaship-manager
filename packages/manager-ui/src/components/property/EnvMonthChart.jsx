@@ -10,7 +10,6 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useConfig from "../../hooks/useConfig";
 import { get } from "../../utils/APIUtil";
-import { IConfig } from "../../config";
 
 export default () => {
   const { selected, setSelectedConfig, env } = useConfig();
