@@ -13,14 +13,14 @@ module.exports = async function gitOperations(req, res) {
 
     let repository;
     let signature = createSignature();
-    const directoryName = `${req.body?.websiteName}_temp_${uuid()}`;
+    const directoryName = `${req.body.websiteName}_temp`;
     const pathClone = `./root/${directoryName}`;
     const resolvePathCreateBranch = `../../../root/${directoryName}/.git`;
     const pathFile = `root/${directoryName}/`;
-    const localBranch = `${req.body?.websiteName}_branch_${uuid()}`;
+    const localBranch = `${req.body.websiteName}_branch_${uuid()}`;
 
-    await cloneGitRepository(req.body?.repositoryConfigs[0].repositoryLink, pathClone);
-    await checkoutRemoteBranch(req.body?.repositoryConfigs[0].branch, resolvePathCreateBranch);
+    await cloneGitRepository(req.body.repositoryConfigs[0].repositoryLink, pathClone);
+    await checkoutRemoteBranch(req.body.repositoryConfigs[0].branch, resolvePathCreateBranch);
     await gitCreateBranch(resolvePathCreateBranch, localBranch);
     repository = await gitCheckout(repository, resolvePathCreateBranch, localBranch);
     await createSPAShipTemplateRequest(req, pathFile);
@@ -70,7 +70,7 @@ async function createSPAShipTemplateRequest(req, pathFile) {
     const spashipTemplate = [];
     const envs = new Set();
 
-    for (let spa of req.body?.repositoryConfigs[0].spas) {
+    for (let spa of req.body.repositoryConfigs[0].spas) {
         const spaTemplate = {
             name: spa.spaName,
             mapping: spa.contextPath,
@@ -82,9 +82,9 @@ async function createSPAShipTemplateRequest(req, pathFile) {
 
         const spaShipFile = {
             websiteVersion: "v1",
-            websiteName: req.body?.websiteName,
+            websiteName: req.body.websiteName,
             environments: spa.envs,
-            branch: req.body?.repositoryConfigs[0].branch,
+            branch: req.body.repositoryConfigs[0].branch,
             name: spa.spaName,
             mapping: spa.contextPath,
             excludeFromEnvs: spa.envs,

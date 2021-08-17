@@ -63,12 +63,14 @@ function updateWebsiteRequest(req) {
     return JSON.parse(JSON.stringify(updateRequest));
 }
 
-function getSpas(req) {
+function getSpas(req, reqBody) {
     return req.map((each) => ({
         repositoryLink: each?.repositoryLink,
         spaName: each?.spaName,
         contextPath: each?.contextPath,
-        envs: each?.envs
+        envs: each?.envs,
+        ownerEmail : reqBody.body?.ownerEmail,
+        ownerName: reqBody.body?.ownerName
     }));
 }
 
@@ -77,7 +79,7 @@ function getRepositoryConfigs(req) {
         repositoryLink: each?.repositoryLink,
         branch: each?.branch,
         gitToken: each.gitToken,
-        spas: getSpas(each.spas),
+        spas: getSpas(each.spas, req),
     }));
 }
 

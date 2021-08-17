@@ -8,6 +8,9 @@ import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import { IConfig, SPAConfigutation } from "../../config";
 import { post } from "../../utils/APIUtil";
+import { useKeycloak } from "@react-keycloak/web";
+import { ISPAshipJWT } from "../../keycloak";
+import useConfig from "../../hooks/useConfig";
 
 interface IProps {
   isModalOpen: boolean;
@@ -46,6 +49,7 @@ const spaConfigutationTemplate: SPAConfigutation = {
 
 
 export default (props: IProps) => {
+  const { env } = useConfig();
   const { isModalOpen, onClose, onSubmit } = props;
   const [responseModal, setResponseModal] = useState(false);
 
@@ -67,6 +71,8 @@ export default (props: IProps) => {
   const [event, setEvent] = useState<any[]>([]);
 
 
+  const { keycloak, initialized } = useKeycloak();
+  const tokenKeyClock = keycloak.tokenParsed as ISPAshipJWT;
 
 
   const handleWebsiteNameChange = (value: string) => {
@@ -80,6 +86,8 @@ export default (props: IProps) => {
     const spaResponse = spaFilePathRequest.filter(item => item.isActive === true)
     const websiteRequest = {
       websiteName: websiteName,
+      ownerName : tokenKeyClock.name,
+      ownerEmail: tokenKeyClock.email,
       repositoryConfigs: [
         {
           repositoryLink: repositoryLink,
@@ -90,7 +98,7 @@ export default (props: IProps) => {
       ]
     };
     console.log(JSON.stringify(websiteRequest));
-    sendRequestToActions(websiteRequest);
+    sendRequestToActions(env, websiteRequest);
     onClose();
   };
 
@@ -100,6 +108,7 @@ export default (props: IProps) => {
   };
 
   useEffect(() => {
+    
     if (repositoryLink.length > 23) {
       let repositoryKeys = repositoryLink.split('/');
       axios.get(`https://api.github.com/repos/${repositoryKeys[3]}/${repositoryKeys[4]}/branches`)
@@ -358,9 +367,9 @@ export default (props: IProps) => {
     </Modal>
   );
 };
-async function sendRequestToActions(websiteRequest: { websiteName: string; repositoryConfigs: { repositoryLink: string; branch: string; gitToken: string; spas: any[]; }[]; }) {
+async function sendRequestToActions(env: any, websiteRequest: { websiteName: string; repositoryConfigs: { repositoryLink: string; branch: string; gitToken: string; spas: any[]; }[]; }) {
   try {
-    const url = "http://localhost:2345/api/v1/website";
+    const url = env.managerPath + "/website";
     if (url) {
       const data = await post<any>(url, websiteRequest);
       console.log(data);

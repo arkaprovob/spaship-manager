@@ -2,7 +2,7 @@ const { Router } = require("express");
 const findAllEvents = require("../controllers/reports/deprecatedServices/findAllEvents");
 const findEventById = require("../controllers/reports/deprecatedServices/findEventById");
 const findEventByProperty = require("../controllers/reports/deprecatedServices/findEventByProperty");
-const saveEvents = require("../controllers/reports/operatorServices/saveEvent");
+//const saveEvents = require("../controllers/reports/operatorServices/saveEvent");
 const getDeploymentPerProperty = require("../controllers/reports/propertyServices/allProperyServices/getAllDeploymentPropertyAnalysis");
 const getPropertyCountByCode  = require("../controllers/reports/propertyServices/allProperyServices/getPropertyCountByCode");
 const getPropertyCountBySpanameAndCode  = require("../controllers/reports/propertyServices/allProperyServices/getPropertyCountBySpanameAndCode");
@@ -26,7 +26,7 @@ const router = new Router();
 
 router.get("/", findAllEvents);
 
-router.post("/", saveEvents);
+//router.post("/", saveEvents);
 
 router.get("/find/property/:propertyName", findEventByProperty);
 
