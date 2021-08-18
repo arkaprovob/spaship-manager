@@ -8,7 +8,7 @@
     "url": "git@github.com:spaship/spaship.git",
     "directory": "packages/manager-ui"
   },
-  "author": "Kun Yan <kyan@redhat.com>",
+  "author": "Soumyadip Chowdhury",
   "license": "MIT",
   "private": true,
   "scripts": {

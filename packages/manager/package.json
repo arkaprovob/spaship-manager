@@ -11,7 +11,8 @@
   "contributors": [
     "Michael Clayton <mclayton@redhat.com>",
     "Kun Yan <kyan@redhat.com>",
-    "Sayak Sarkar <ssarkar@redhat.com >"
+    "Sayak Sarkar <ssarkar@redhat.com >",
+    "Soumyadip Chowdhury"
   ],
   "main": "index.js",
   "bin": {
