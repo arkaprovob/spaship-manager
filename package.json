@@ -23,10 +23,11 @@
     "start": "bash scripts/start.sh",
     "old-start": "npm run lerna run start",
     "bootstrap": "npm run lerna bootstrap --hoist",
-    "postinstall": "npm run bootstrap",
+    "postinstall": "lerna bootstrap",
     "test": "CI=true npm run lerna run test",
     "dev": "bash scripts/dev.sh",
-    "lerna": "./node_modules/.bin/lerna"
+    "lerna": "./node_modules/.bin/lerna",
+    "testl": "npm run lerna bootstrap"
   },
   "husky": {
     "hooks": {
