@@ -60,6 +60,6 @@ RUN npm i nodegit
 #RUN apk add --update bash && rm -rf /var/cache/apk/*
 # RUN apt-get --update bash 
 
-EXPOSE 2468 2345
+EXPOSE 3000
 
 CMD [ "npm", "run", "start"]

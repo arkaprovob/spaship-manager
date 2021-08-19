@@ -126,6 +126,8 @@ function fetchWebsiteData(setWebsiteList: any, env: any) {
       setWebsiteList([]);
       if (url) {
         const data = await get<any>(url);
+        console.log("fetchWebsiteData data from "+url);
+        console.log(data);
         console.log(data);
         setWebsiteList(data);
       }
