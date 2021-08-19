@@ -1,12 +1,12 @@
-import { keycloak } from "../keycloak";
+//import { keycloak } from "../keycloak";
 
 const getDefaultHeader = async (useJSON = true) => {
-  await keycloak.updateToken(30);
+ // await keycloak.updateToken(30);
 
   const headers = new Headers();
 
   headers.append("Accept", "application/json");
-  headers.append("Authorization", `Bearer ${keycloak.token}`);
+//  headers.append("Authorization", `Bearer ${keycloak.token}`);
 
   if (useJSON) {
     headers.append("Content-Type", "application/json");

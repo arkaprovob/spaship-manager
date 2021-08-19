@@ -19,7 +19,8 @@ export default () => {
 
     const chartData = [];
     const labelData = [];
-    let count = 0;
+    let count : any;
+    count = 0;
 
     for (let item of event) {
         const value = JSON.parse(JSON.stringify(item));
@@ -53,7 +54,7 @@ export default () => {
                     top: 20
                 }}
                 subTitle="Deployed Env"
-                title={count}
+                title={count || 0}
                 themeColor={ChartThemeColor.multiOrdered}
                 width={350}
             />

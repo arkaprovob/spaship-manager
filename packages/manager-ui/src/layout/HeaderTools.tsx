@@ -11,29 +11,29 @@ const StyledButton = styled(Button)({
 });
 
 export default () => {
-  const { keycloak, initialized } = useKeycloak();
+ // const { keycloak, initialized } = useKeycloak();
 
   const renderLoginButton = () => {
-    if (!initialized) {
-      return <></>;
-    }
+    // if (!initialized) {
+    //   return <></>;
+    // }
 
-    if (keycloak.authenticated) {
-      return (
-        <PageHeaderToolsItem>
-          <StyledButton variant="link" icon={<UserIcon />}>
-            {(keycloak.tokenParsed as ISPAshipJWT).name}
-          </StyledButton>
-        </PageHeaderToolsItem>
-      );
-    }
-    return (
-      <PageHeaderToolsItem>
-        <StyledButton onClick={() => keycloak.login()} variant="link" icon={<UserIcon />}>
-          Sign In
-        </StyledButton>
-      </PageHeaderToolsItem>
-    );
+  //   if (keycloak.authenticated) {
+  //     return (
+  //       <PageHeaderToolsItem>
+  //         <StyledButton variant="link" icon={<UserIcon />}>
+  //           {(keycloak.tokenParsed as ISPAshipJWT).name}
+  //         </StyledButton>
+  //       </PageHeaderToolsItem>
+  //     );
+  //   }
+  //   return (
+  //     <PageHeaderToolsItem>
+  //       <StyledButton onClick={() => keycloak.login()} variant="link" icon={<UserIcon />}>
+  //         Sign In
+  //       </StyledButton>
+  //     </PageHeaderToolsItem>
+  //   );
   };
 
   return (

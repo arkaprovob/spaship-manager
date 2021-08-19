@@ -1,38 +1,35 @@
-import { Router, Redirect, Route, Switch } from "react-router-dom";
-import { Bullseye } from "@patternfly/react-core";
 import { createBrowserHistory } from "history";
-import ApplicationList from "./components/application/ApplicationList";
+import { Redirect, Route, Router, Switch } from "react-router-dom";
 import AddApplication from "./components/application/AddApplication";
 import ApplicationIndex from "./components/application/ApplicationIndex";
-import LoginPage from "./components/user/LoginPage";
+import ApplicationList from "./components/application/ApplicationList";
 import APIKeyList from "./components/authentication/APIKeyList";
-import PrivateRoute from "./PrivateRoute";
-import { useKeycloak } from "@react-keycloak/web";
-import EnvironmentList from "./components/environment/EnvironmentList";
 import DashboardIndex from "./components/dashboard/DashboardIndex";
-import EmptySpinner from "./components/general/EmptySpinner";
-import PropertyList from "./components/property/PropertyList";
 import DashboardSPAPage from "./components/dashboard/spa/DashboardSPAPage";
+import EnvironmentList from "./components/environment/EnvironmentList";
+import PropertyList from "./components/property/PropertyList";
+import LoginPage from "./components/user/LoginPage";
+import PrivateRoute from "./PrivateRoute";
 
 const history = createBrowserHistory();
 
 // Wrap everything inside KeycloakProvider
 export default () => {
-  const { initialized } = useKeycloak();
-  if (!initialized) {
-    return (
-      <Bullseye>
-        <EmptySpinner />
-      </Bullseye>
-    );
-  }
+  // const { initialized } = useKeycloak();
+  // if (!initialized) {
+  //   return (
+  //     <Bullseye>
+  //       <EmptySpinner />
+  //     </Bullseye>
+  //   );
+  // }
 
   return (
     <Router history={history}>
       <Switch>
         <Route exact path="/" component={PropertyList} />
         <Redirect exact path="/authentication" to="/authentication/apikeys" />
-        <Route path="/login" component={LoginPage} />
+        {/* <Route path="/login" component={LoginPage} /> */}
         <PrivateRoute path="/authentication/apikeys" component={APIKeyList} />
         <PrivateRoute path="/applications/new" component={AddApplication} />
         <PrivateRoute path="/applications/:applicationName" component={ApplicationIndex} />
