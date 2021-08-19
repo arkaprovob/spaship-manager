@@ -64,12 +64,12 @@ export default () => {
 function fetchEventData(selected: IConfig | undefined, setEvent: any, env : any) {
     return async () => {
         try {
-            console.log("HEYHEYHEY")
             const url = env.managerPath + "/event/get/chart/all/property/env";
             setEvent([]);
             if (url) {
-                console.log("Enviournment URL 0: " + url);
                 const data = await get<any>(url);
+                console.log("Env data");
+                console.log(data);
                 setEvent(data);
             }
         } catch (e) {
