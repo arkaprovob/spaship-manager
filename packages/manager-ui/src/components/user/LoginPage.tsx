@@ -11,7 +11,7 @@ import {
 } from "@patternfly/react-core";
 import { OptimizeIcon } from "@patternfly/react-icons";
 import { useHistory } from "react-router-dom";
-import { useKeycloak } from "@react-keycloak/web";
+//import { useKeycloak } from "@react-keycloak/web";
 import styled from "styled-components";
 import Header from "../../layout/Header";
 import rocket from "../../static/img/rocket.svg";
@@ -58,25 +58,25 @@ const StyledCard = styled(Card)({
 
 export default () => {
   const history = useHistory();
-  const { keycloak, initialized } = useKeycloak();
+//  const { keycloak, initialized } = useKeycloak();
 
-  if (!initialized) {
-    return (
-      <Bullseye>
-        <EmptySpinner />
-      </Bullseye>
-    );
-  }
+  // if (!initialized) {
+  //   return (
+  //     <Bullseye>
+  //       <EmptySpinner />
+  //     </Bullseye>
+  //   );
+  // }
 
   const onClickLogin = () => {
     history.push("/applications");
-    keycloak.login();
+   // keycloak.login();
   };
 
-  if (keycloak.authenticated) {
-    history.push("/applications");
-    return <div />;
-  }
+  // if (keycloak.authenticated) {
+  //   history.push("/applications");
+  //   return <div />;
+  // }
 
   return (
     <Page header={<Header />}>

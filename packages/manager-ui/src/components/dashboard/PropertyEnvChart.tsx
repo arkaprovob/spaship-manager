@@ -27,7 +27,8 @@ export default (props: IProps) => {
 
     const chartData = [];
     const labelData = [];
-    let count = 0;
+    let count : any;
+    count = 0;
     if (event) {
         for (let item of event) {
             const value = JSON.parse(JSON.stringify(item));
@@ -62,7 +63,7 @@ export default (props: IProps) => {
                     top: 20
                 }}
                 subTitle="Deployed Env"
-                title={count}
+                title={count || 0}
                 themeColor={ChartThemeColor.multiOrdered}
                 width={350}
             />

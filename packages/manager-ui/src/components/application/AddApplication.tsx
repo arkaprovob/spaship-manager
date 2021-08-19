@@ -89,7 +89,7 @@ export default withRouter(({ history }) => {
       if (application) {
         setUploading(false);
         send("success", "Success", <p>Application created</p>, {
-          autoClose: 3000,
+       //   autoClose: 3000,
           onClose: () => {
             history.push("/applications");
           },

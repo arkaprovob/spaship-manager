@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import { IConfig, SPAConfigutation } from "../../config";
 import { post } from "../../utils/APIUtil";
-import { useKeycloak } from "@react-keycloak/web";
+//import { useKeycloak } from "@react-keycloak/web";
 import { ISPAshipJWT } from "../../keycloak";
 import useConfig from "../../hooks/useConfig";
 
@@ -71,8 +71,8 @@ export default (props: IProps) => {
   const [event, setEvent] = useState<any[]>([]);
 
 
-  const { keycloak, initialized } = useKeycloak();
-  const tokenKeyClock = keycloak.tokenParsed as ISPAshipJWT;
+  //const { keycloak, initialized } = useKeycloak();
+  //const tokenKeyClock = keycloak.tokenParsed as ISPAshipJWT;
 
 
   const handleWebsiteNameChange = (value: string) => {
@@ -86,8 +86,8 @@ export default (props: IProps) => {
     const spaResponse = spaFilePathRequest.filter(item => item.isActive === true)
     const websiteRequest = {
       websiteName: websiteName,
-      ownerName : tokenKeyClock.name,
-      ownerEmail: tokenKeyClock.email,
+      //ownerName : tokenKeyClock.name,
+      //ownerEmail: tokenKeyClock.email,
       repositoryConfigs: [
         {
           repositoryLink: repositoryLink,

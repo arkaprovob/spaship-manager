@@ -1,4 +1,4 @@
-import { Gallery, GalleryItem, Page, PageSection, PageSectionVariants, Title } from "@patternfly/react-core";
+
 import { count } from "console";
 import { config } from "process";
 import { useEffect, useState } from "react";
@@ -9,6 +9,7 @@ import Header from "../../layout/Header";
 import { get } from "../../utils/APIUtil";
 import EnvChart from "./EnvChart";
 import EnvMonthChart from "./EnvMonthChart";
+import { Gallery, GalleryItem, Page, PageSection, PageSectionVariants, Title } from "@patternfly/react-core";
 import LatestActivities from "./LatestActivities";
 import NewProperty from "./NewProperty";
 import Property from "./Property";

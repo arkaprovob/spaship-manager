@@ -13,7 +13,7 @@ export interface ISPAshipJWT extends Keycloak.KeycloakTokenParsed {
 // Setup Keycloak instance as needed
 // Pass initialization options as required or leave blank to load from 'keycloak.json'
 const options = {
-  url: process.env.NODE_ENV === "production" ? "https://auth.redhat.com/auth" : "https://auth.stage.redhat.com/auth",
+  url: process.env.NODE_ENV === "production" ? "https://auth.stageredhat.com/auth" : "https://auth.stage.redhat.com/auth",
   realm: "EmployeeIDP",
   clientId: "spaship-reference",
 };
@@ -30,4 +30,4 @@ function getEncodedUserToken() {
   return keycloak.token;
 }
 
-export { keycloak, getUserToken, getEncodedUserToken };
+//export { keycloak, getUserToken, getEncodedUserToken };
