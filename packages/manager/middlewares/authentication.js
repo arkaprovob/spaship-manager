@@ -1,5 +1,5 @@
 const jwt = require("express-jwt");
-const { log } = require("@spaship/common/lib/logging/pino");
+//const { log } = require("@spaship/common/lib/logging/pino");
 const APIKeyService = require("../services/apiKeyService");
 const config = require("../config");
 const keyUtil = require("../utils/keyUtil");

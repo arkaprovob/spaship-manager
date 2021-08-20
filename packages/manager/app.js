@@ -7,7 +7,7 @@ const swaggerUi = require("swagger-ui-express");
 const path = require("path");
 const fs = require("fs");
 const yaml = require("js-yaml");
-const { pinoExpress } = require("@spaship/common/lib/logging/pino");
+//const { pinoExpress } = require("@spaship/common/lib/logging/pino");
 const authentication = require("./middlewares/authentication");
 const checkAccess = require("./middlewares/checkAccess");
 const responseWrapper = require("./middlewares/responseWrapper");
@@ -26,7 +26,7 @@ app
   .use(cors())
   .use(helmet())
   .use(compression())
-  .use(pinoExpress)
+  //.use(pinoExpress)
   .use(responseWrapper())
   .get("/liveness", liveness)
   .get("/readiness", readiness)

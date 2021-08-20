@@ -1,7 +1,7 @@
 const { readFileSync } = require("fs");
 const path = require("path");
 const config = require("../config");
-const { log } = require("@spaship/common/lib/logging/pino");
+//const { log } = require("@spaship/common/lib/logging/pino");
 
 const formatAsPem = (str) => {
   const keyHeader = "-----BEGIN PUBLIC KEY-----";
@@ -35,7 +35,7 @@ const getPublicKey = () => {
       log.error(error);
     }
   }
- // throw Error("No Keycloak Public Key can be found! Please configure it.");
+  // throw Error("No Keycloak Public Key can be found! Please configure it.");
 };
 
 module.exports = {

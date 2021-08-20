@@ -1,10 +1,10 @@
 const path = require("path");
 const fsp = require("fs").promises;
 const config = require("../config");
-const common = require("@spaship/common");
+//const common = require("@spaship/common");
 const { flow, map } = require("lodash/fp");
 
-const write = async (filename, extraData) => await common.config.append(filename, extraData);
+//const write = async (filename, extraData) => await common.config.append(filename, extraData);
 
 /**
  * Get all the SPA directories in the webroot (not including hidden dirs), then
@@ -41,7 +41,7 @@ const get = async (spaDir) => {
 
 const remove = async (spaPath) => {
   try {
-    const flatPath = common.flatpath.toDir(spaPath);
+    //const flatPath = common.flatpath.toDir(spaPath);
     const destDir = path.join(config.get("webroot"), flatPath);
     await fsp.rmdir(destDir, { recursive: true });
   } catch (error) {
@@ -60,4 +60,4 @@ const find = async (name) => {
   return null;
 };
 
-module.exports = { write, getAll, get, remove, find };
+module.exports = { getAll, get, remove, find };
