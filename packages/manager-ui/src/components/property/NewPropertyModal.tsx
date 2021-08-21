@@ -27,24 +27,6 @@ const configTemplate: IConfig = {
   ],
 };
 
-const spaConfigutationTemplate: SPAConfigutation = {
-  websiteName: "",
-  repositoryConfigs: [
-    {
-      repositoryLink: "",
-      branch: "",
-      gitToken: "",
-      spas: [
-        {
-          spaName: "",
-          contextPath: "",
-          envs: []
-        },
-      ]
-    }
-  ],
-};
-
 
 export default (props: IProps) => {
   const { env, website } = useConfig();
@@ -52,7 +34,6 @@ export default (props: IProps) => {
   const [responseModal, setResponseModal] = useState(false);
 
   const [config, setConfig] = useState<IConfig>(configTemplate);
-  const [spaConfigutation, setSpaConfigutation] = useState<SPAConfigutation>(spaConfigutationTemplate);
   const [validated, setValidated] = useState<"success" | "error" | "default">("default");
   const [websiteName, setWebsiteName] = useState("");
 

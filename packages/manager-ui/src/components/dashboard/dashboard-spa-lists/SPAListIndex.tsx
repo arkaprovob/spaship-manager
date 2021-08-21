@@ -16,15 +16,15 @@ import useConfig from "../../../hooks/useConfig";
 import SPAListForWebsites from "./SPAListForWebsites";
 
 export default () => {
-  const { configs, selected, website, setSelectedConfig, addConfig, removeConfig, env } = useConfig();
+  const { selected, website, setSelectedConfig, env } = useConfig();
   const { propertyName } = useParams<{ propertyName: string }>();
   const [event, setEvent] = useState([]);
   const history = useHistory();
   const [isModalOpen, setModalOpen] = useState(false);
 
-  const handleRemove = (conf: IConfig) => {
-    removeConfig(conf.name);
-  };
+  // const handleRemove = (conf: IConfig) => {
+  //   removeConfig(conf.name);
+  // };
 
   const onSelect = async (spaName: string, propertyName: string) => {
     history.push(`/dashboard/${propertyName}/spaName/${spaName}`);

@@ -34,3 +34,7 @@ export interface SPAConfig {
 export interface WebsiteConfig {
   name: string;
 }
+
+export interface SPAConfig {
+  name: any;
+}

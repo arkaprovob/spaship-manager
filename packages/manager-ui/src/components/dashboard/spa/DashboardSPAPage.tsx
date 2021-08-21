@@ -13,7 +13,7 @@ import SPAEnvChart from "./SPAEnvChart";
 import SPAEnvMonthChart from "./SPAEnvMonthChart";
 
 export default () => {
-  const { configs, selected, setSelectedConfig, addConfig, removeConfig, env } = useConfig();
+  const {  selected, setSelectedConfig, env } = useConfig();
   const { spaName, propertyName } = useParams<{ spaName: string, propertyName: string }>();
   const [event, setEvent] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);

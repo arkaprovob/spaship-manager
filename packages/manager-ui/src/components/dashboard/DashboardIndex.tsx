@@ -15,20 +15,18 @@ import SearchFilter from "../property/SearchFilter";
 import NewPropertyModal from "../property/NewPropertyModal";
 
 export default () => {
-  const { configs, selected, website, setSelectedConfig, addConfig, removeConfig, env } = useConfig();
+  const { selected, website, setSPAConfig,  env } = useConfig();
   const { propertyName } = useParams<{ propertyName: string }>();
   const [event, setEvent] = useState([]);
   const history = useHistory();
   const [isModalOpen, setModalOpen] = useState(false);
 
-  const handleRemove = (conf: IConfig) => {
-    removeConfig(conf.name);
-  };
-
+  
   const onSelect = async (spaName: string, propertyName: string) => {
+    const spaConfig = { name: spaName};
+    setSPAConfig(spaConfig);
     history.push(`/dashboard/${propertyName}/spaName/${spaName}`);
-  };
-
+  }
   const getEventData = fetchEventData(selected, propertyName, setEvent, env);
 
   useEffect(() => {

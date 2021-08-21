@@ -8,7 +8,7 @@ import Namespace from "./Namespace";
 import useConfig from "../hooks/useConfig";
 
 export default () => {
-  const { configs, selected, website, setSelectedConfig, addConfig, removeConfig } = useConfig();
+  const {website, spa} = useConfig();
   return (
     <Stack height="100%">
       <StackItem>
@@ -20,15 +20,15 @@ export default () => {
       <StackItem isFilled>
         <Nav aria-label="Nav" theme="light" variant="default">
           <NavList>
-            <NavItem itemId={0} isActive={true} disabled={true}>
+            <NavItem itemId={0}  isActive={(!!useRouteMatch(`/dashboard/property/${website}`) || !!useRouteMatch(`/dashboard/${website}/spaName/${spa}`))} disabled={true}>
             <Link to={`/dashboard/property/one.redhat.com`}> 
-                <TopologyIcon />
+                <ApplicationsIcon />
                 Dashboard
              </Link> 
             </NavItem>
-            <NavItem itemId={1} >
+            <NavItem itemId={1} isActive={!!useRouteMatch(`/dashboard/spa/${website}`)} disabled={true} >
             <Link to={`/dashboard/spa/one.redhat.com`}> 
-                <TopologyIcon />
+                <ServerIcon />
                 SPA Lists
            </Link> 
             </NavItem>

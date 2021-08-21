@@ -12,17 +12,13 @@ import NewProperty from "./NewProperty";
 import Property from "./Property";
 
 export default () => {
-  const { selected, setWebsiteConfig, website, removeConfig, env } = useConfig();
+  const { selected, setWebsiteConfig, website, env } = useConfig();
   const [event, setEvent] = useState<any>([]);
   const [websitelist, setWebsiteList] = useState<any>([]);
   const history = useHistory();
 
   const handleSubmit = (conf: IConfig) => {
     // addConfig(conf);
-  };
-
-  const handleRemove = (conf: IConfig) => {
-    removeConfig(conf.name);
   };
 
   const onSelect = async (conf: any) => {
@@ -41,7 +37,7 @@ export default () => {
     getEventData();
     getWebsiteData();
     console.log(websitelist);
-  }, [selected, website]);
+  }, [env, selected, website]);
 
   // const sortConfigs = getSortConfigs(configs);
 
@@ -60,7 +56,6 @@ export default () => {
                 selectedName={selected?.name}
                 event={event}
                 onSelect={onSelect}
-                onRemove={handleRemove}
               />
             </GalleryItem>
           ))}
