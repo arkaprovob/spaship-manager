@@ -1,10 +1,11 @@
-import { Gallery, GalleryItem, Level, LevelItem, PageSection, PageSectionVariants, Title } from "@patternfly/react-core";
+import { Button, Gallery, GalleryItem, Level, LevelItem, PageSection, PageSectionVariants, Title } from "@patternfly/react-core";
 import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { IConfig } from "../../../config";
 import useConfig from "../../../hooks/useConfig";
 import Page from "../../../layout/Page";
 import { get } from "../../../utils/APIUtil";
+import NewPropertyModal from "../../property/NewPropertyModal";
 import SearchFilter from "../../property/SearchFilter";
 import DashboardProperty from "./DashboardSPAProperty";
 import LatestActivitiesBySPA from "./LatestActivitiesBySPA";
@@ -15,6 +16,7 @@ export default () => {
   const { configs, selected, setSelectedConfig, addConfig, removeConfig, env } = useConfig();
   const { spaName, propertyName } = useParams<{ spaName: string, propertyName: string }>();
   const [event, setEvent] = useState([]);
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const getEventData = fetchEventData(selected, spaName, setEvent, propertyName, env);
 
@@ -22,14 +24,33 @@ export default () => {
     getEventData();
   }, [selected]);
 
+  const handleSubmit = (conf: IConfig) => {
+    setModalOpen(false);
+  };
+
+  const handleClose = () => {
+    setModalOpen(false);
+  };
+
+  const handleClick = () => {
+    setModalOpen(true);
+  };
   const eventResponse = getEventResponse(event);
 
   const titleToolbar = (
+    <>
     <Level hasGutter>
       <LevelItem>
-      <SearchFilter></SearchFilter>
+        <SearchFilter></SearchFilter>
+      </LevelItem>
+      <LevelItem>
+        <Button onClick={handleClick} id="add-application-button" variant="primary">
+          Add New Repository
+        </Button>
       </LevelItem>
     </Level>
+    <NewPropertyModal isModalOpen={isModalOpen} onClose={handleClose} onSubmit={handleSubmit} />
+    </>
   );
 
   return (

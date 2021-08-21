@@ -13,11 +13,11 @@ module.exports = async function gitOperations(req, res) {
 
     let repository;
     let signature = createSignature();
-    const directoryName = `${req.body.websiteName}_temp`;
+    const directoryName = `${req.body.websiteName}_temp_${uuid()}`;
     const pathClone = `./root/${directoryName}`;
     const resolvePathCreateBranch = `../../../root/${directoryName}/.git`;
     const pathFile = `root/${directoryName}/`;
-    const localBranch = `${req.body.websiteName}_branch_${uuid()}`;
+    const localBranch = `${req.body.websiteName}_spaship`;
 
     await cloneGitRepository(req.body.repositoryConfigs[0].repositoryLink, pathClone);
     await checkoutRemoteBranch(req.body.repositoryConfigs[0].branch, resolvePathCreateBranch);

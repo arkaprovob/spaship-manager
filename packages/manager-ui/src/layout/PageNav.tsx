@@ -21,10 +21,16 @@ export default () => {
         <Nav aria-label="Nav" theme="light" variant="default">
           <NavList>
             <NavItem itemId={0} isActive={true} disabled={true}>
-              {/* <Link to={`/dashboard/property/${website?.name}`}> */}
+            <Link to={`/dashboard/property/one.redhat.com`}> 
                 <TopologyIcon />
                 Dashboard
-              {/* </Link> */}
+             </Link> 
+            </NavItem>
+            <NavItem itemId={1} >
+            <Link to={`/dashboard/spa/one.redhat.com`}> 
+                <TopologyIcon />
+                SPA Lists
+           </Link> 
             </NavItem>
             {/* <NavItem itemId={0} isActive={!!useRouteMatch(`/dashboard/property/${website?.name}`)} disabled={true}>
               <Link to={`/dashboard/property/${website?.name}`}>

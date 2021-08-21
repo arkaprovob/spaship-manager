@@ -52,11 +52,8 @@ const useConfig = () => {
   };
 
   const setWebsiteConfig = (conf: WebsiteConfig) => {
-    console.log(conf);
     setWebsite(conf.name);
     saveStorage(websiteKey, conf.name);
-    console.log("Website");
-    console.log(website);
   };
 
   useEffect(() => {
