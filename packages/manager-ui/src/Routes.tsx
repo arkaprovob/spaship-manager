@@ -4,6 +4,7 @@ import AddApplication from "./components/application/AddApplication";
 import ApplicationIndex from "./components/application/ApplicationIndex";
 import ApplicationList from "./components/application/ApplicationList";
 import APIKeyList from "./components/authentication/APIKeyList";
+import SPAListIndex from "./components/dashboard/dashboard-spa-lists/SPAListIndex";
 import DashboardIndex from "./components/dashboard/DashboardIndex";
 import DashboardSPAPage from "./components/dashboard/spa/DashboardSPAPage";
 import EnvironmentList from "./components/environment/EnvironmentList";
@@ -36,6 +37,7 @@ export default () => {
         <PrivateRoute path="/applications" component={ApplicationList} />
         <PrivateRoute path="/environments" component={EnvironmentList} />
         <PrivateRoute path="/dashboard/property/:propertyName" component={DashboardIndex} />
+        <PrivateRoute path="/dashboard/spa/:propertyName" component={SPAListIndex} />
         <PrivateRoute path="/dashboard/:propertyName/spaName/:spaName" component={DashboardSPAPage} />
         <Route exact path="/dashboard">
           <Redirect to={history.location.pathname} /> : <DashboardIndex />

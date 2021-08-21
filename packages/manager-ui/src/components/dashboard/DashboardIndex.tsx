@@ -12,27 +12,39 @@ import PropertyEnvMonthChart from "./PropertyEnvMonthChart.jsx";
 import PropertyTimeToDeployChart from "./PropertyTimeToDeployChart";
 import { Button, Level, LevelItem } from "@patternfly/react-core";
 import SearchFilter from "../property/SearchFilter";
+import NewPropertyModal from "../property/NewPropertyModal";
 
 export default () => {
-  const { configs, selected, setSelectedConfig, addConfig, removeConfig, env } = useConfig();
+  const { selected, website, setSPAConfig,  env } = useConfig();
   const { propertyName } = useParams<{ propertyName: string }>();
   const [event, setEvent] = useState([]);
   const history = useHistory();
-  const handleRemove = (conf: IConfig) => {
-    removeConfig(conf.name);
-  };
+  const [isModalOpen, setModalOpen] = useState(false);
 
+  
   const onSelect = async (spaName: string, propertyName: string) => {
-    // await setSelectedConfig(conf);
+    const spaConfig = { name: spaName};
+    setSPAConfig(spaConfig);
     history.push(`/dashboard/${propertyName}/spaName/${spaName}`);
-  };
-
+  }
   const getEventData = fetchEventData(selected, propertyName, setEvent, env);
 
   useEffect(() => {
     getEventData();
   }, [selected]);
 
+  const handleSubmit = (conf: IConfig) => {
+    setModalOpen(false);
+  };
+
+  const handleClose = () => {
+    setModalOpen(false);
+  };
+
+  const handleClick = () => {
+    setModalOpen(true);
+  };
+  
   const eventResponse = [];
   if (event) {
     for (let item of event) {
@@ -42,53 +54,59 @@ export default () => {
   }
 
   const titleToolbar = (
+    <>
     <Level hasGutter>
       <LevelItem>
-      <SearchFilter></SearchFilter>
+        <SearchFilter></SearchFilter>
+      </LevelItem>
+      <LevelItem>
+        <Button onClick={handleClick} id="add-application-button" variant="primary">
+          Add New Repository
+        </Button>
       </LevelItem>
     </Level>
+    <NewPropertyModal isModalOpen={isModalOpen} onClose={handleClose} onSubmit={handleSubmit} />
+    </>
   );
 
   return (
-    <Page title="Dashboard - Property Deployment" titleToolbar={titleToolbar}>
-      <PageSection variant={PageSectionVariants.light} isFilled>
-        <Gallery hasGutter style={{ width: "90%" }}>
-          {eventResponse.map((e) => (
-            <GalleryItem key={e.id} >
-              <DashboardProperty config={e} selectedName={e.spaName}  propertyName={propertyName} onSelect={onSelect} />
+    <>
+      <Page title="Dashboard - Property Deployment" titleToolbar={titleToolbar}>
+        <PageSection variant={PageSectionVariants.light} isFilled>
+          <Gallery hasGutter style={{ width: "90%" }}>
+            {eventResponse.map((e) => (
+              <GalleryItem key={e.id} >
+                <DashboardProperty config={e} selectedName={e.spaName} propertyName={propertyName} onSelect={onSelect} />
+              </GalleryItem>
+            ))}
+          </Gallery>
+        </PageSection>
+
+        <PageSection variant={PageSectionVariants.light} isFilled>
+          <Title headingLevel="h1">Deployment Metrics</Title>
+          <Gallery hasGutter style={{ width: "90%" }}>
+            <GalleryItem >
+              <PropertyEnvChart propertyNameRequest={propertyName}></PropertyEnvChart>
             </GalleryItem>
-          ))}
-        </Gallery>
-      </PageSection>
+            <GalleryItem >
+              <PropertyEnvMonthChart propertyNameRequest={propertyName}></PropertyEnvMonthChart>
+            </GalleryItem>
+          </Gallery>
 
-      <PageSection variant={PageSectionVariants.light} isFilled>
-        <Title headingLevel="h1">Deployment Metrics</Title>
-        <Gallery hasGutter style={{ width: "90%" }}>
-          <GalleryItem >
-            <PropertyEnvChart propertyNameRequest={propertyName}></PropertyEnvChart>
-          </GalleryItem>
-          <GalleryItem >
-            <PropertyEnvMonthChart propertyNameRequest={propertyName}></PropertyEnvMonthChart>
-          </GalleryItem>
-        </Gallery>
+          <Title headingLevel="h1">Time to Deploy Metrics</Title>
+          <Gallery hasGutter style={{ width: "90%" }}>
+            <GalleryItem >
+              <PropertyTimeToDeployChart propertyNameRequest={propertyName}></PropertyTimeToDeployChart>
+            </GalleryItem>
+          </Gallery>
 
-
-        <Title headingLevel="h1">Time to Deploy Metrics</Title>
-        <Gallery hasGutter style={{ width: "90%" }}>
-          <GalleryItem >
-            <PropertyTimeToDeployChart propertyNameRequest={propertyName}></PropertyTimeToDeployChart>
-          </GalleryItem>
-        </Gallery>
-
-
-        <Title headingLevel="h1">Property Latest Activites</Title>
-        <br></br>
-        <LatestActivitiesByProperty propertyNameRequest={propertyName} />
-      </PageSection>
-
-
-
-    </Page>
+          <Title headingLevel="h1">Property Latest Activites</Title>
+          <br></br>
+          <LatestActivitiesByProperty propertyNameRequest={propertyName} />
+        </PageSection>
+        
+      </Page>
+    </>
   );
 };
 

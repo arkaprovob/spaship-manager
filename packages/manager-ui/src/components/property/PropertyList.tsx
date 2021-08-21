@@ -1,6 +1,3 @@
-
-import { count } from "console";
-import { config } from "process";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { IConfig } from "../../config";
@@ -15,7 +12,7 @@ import NewProperty from "./NewProperty";
 import Property from "./Property";
 
 export default () => {
-  const { configs, selected, setSelectedConfig, setWebsiteConfig, addConfig, removeConfig, env } = useConfig();
+  const { selected, setWebsiteConfig, website, env } = useConfig();
   const [event, setEvent] = useState<any>([]);
   const [websitelist, setWebsiteList] = useState<any>([]);
   const history = useHistory();
@@ -24,12 +21,8 @@ export default () => {
     // addConfig(conf);
   };
 
-  const handleRemove = (conf: IConfig) => {
-    removeConfig(conf.name);
-  };
-
   const onSelect = async (conf: any) => {
-  //  console.log(conf);
+    //  console.log(conf);
     const websiteConfig = { name: conf.websiteName };
     await setWebsiteConfig(websiteConfig);
     history.push(`/dashboard/property/${conf.websiteName}`);
@@ -39,12 +32,14 @@ export default () => {
   const getWebsiteData = fetchWebsiteData(setWebsiteList, env);
 
   useEffect(() => {
+    console.log("Pre Website data");
+    console.log(website);
     getEventData();
     getWebsiteData();
     console.log(websitelist);
-  }, [selected]);
+  }, [env, selected, website]);
 
-  const sortConfigs = getSortConfigs(configs);
+  // const sortConfigs = getSortConfigs(configs);
 
   return (
     <Page header={<Header />}>
@@ -61,7 +56,6 @@ export default () => {
                 selectedName={selected?.name}
                 event={event}
                 onSelect={onSelect}
-                onRemove={handleRemove}
               />
             </GalleryItem>
           ))}
@@ -127,7 +121,7 @@ function fetchWebsiteData(setWebsiteList: any, env: any) {
       setWebsiteList([]);
       if (url) {
         const data = await get<any>(url);
-        console.log("fetchWebsiteData data from "+url);
+        console.log("fetchWebsiteData data from " + url);
         console.log(data);
         console.log(data);
         setWebsiteList(data);
