@@ -6,14 +6,28 @@ SPAship is an early-stages Single-Page App deployment and hosting platform.
 
 SPAship consists of a few packages, found inside the `packages` directory.
 
-- **Manager** - backend system for managing SPA Workflow
-- **Manager UI** - a web UI for managing SPAs
+- **Manager** - Backend system for managing SPA Workflow
+- **Manager UI** - A web UI for managing SPAs
 
-## Set Up Env
+## Set Up Env SPAShip Manager 
+
+### Mac OS
+
+- ENV Setup
+
 ```
-npm install
+
+git clone https://github.com/spaship/spaship-manager.git
+cd spaship-manager
+npm i
+
+```
+
+- RUN SPAShip Manager 
+```
 npm run start
 ```
+
 
 ## Testing
 
