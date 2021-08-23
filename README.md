@@ -41,7 +41,7 @@ cd spaship-manager
 2. Configure Manager
 
 ```
-cd manager
+cd packages/manager
 
 sudo apt  --force-yes install -y libssl-dev
 sudo apt-get --force-yes install -y  libpcre3 libpcre3-dev
@@ -90,7 +90,7 @@ cd spaship-manager
 2. Configure Manager
 
 ```
-cd manager
+cd packages/manager
 
 sudo apt-get update
 sudo apt-get --force-yes upgrade  -y
@@ -136,6 +136,23 @@ sudo npm i nodegit
 cd ../../
 
 npm run start
+```
+
+### Docker Sytem
+
+```
+git clone https://github.com/spaship/spaship-manager.git
+cd spaship-manager
+
+docker network create spaship
+
+cd packages/manager
+docker build -t spa-manager .
+docker run -p 3000:3000 -d --net spaship --name manager spa-manager
+
+cd ../manager-ui
+docker build -t spa-ui .
+docker run -p 2468:2468 -d --net spaship --name ui spa-ui
 ```
 
 ## Testing
