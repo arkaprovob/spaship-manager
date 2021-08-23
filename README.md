@@ -1,5 +1,4 @@
-# SPAship &middot; [![Build Status](https://travis-ci.com/spaship/spaship.svg?branch=master)](https://travis-ci.com/spaship/spaship) [![codecov](https://codecov.io/gh/spaship/spaship/branch/master/graph/badge.svg)](https://codecov.io/gh/spaship/spaship)
-
+# SPAship &middot; 
 SPAship is an early-stages Single-Page App deployment and hosting platform.
 
 ## Packages
