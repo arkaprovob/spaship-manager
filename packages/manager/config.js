@@ -95,6 +95,7 @@ nconf.defaults({
   webroot: "/var/www",
   upload_dir: "/tmp/spaship_uploads",
   sse: "http://localhost:5000/sse/80",
+  directoryBasePath : 'root',
   db: {
     mongo: {
       url: process.env.DB_CON || 'localhost:27017',

@@ -4,6 +4,7 @@ const fs = require('fs');
 const { uuid } = require("uuidv4");
 const zip = require('zip-a-folder').zip;
 const saveWebsite = require("../saveWebsite");
+const config = require('../../../config');
 
 const delay = millis => new Promise((resolve, reject) => {
     setTimeout(_ => resolve(), millis)
@@ -12,12 +13,13 @@ const delay = millis => new Promise((resolve, reject) => {
 module.exports = async function gitOperations(req, res) {
 
     let repository;
-    let signature = createSignature();
     const directoryName = `${req.body.websiteName}_temp_${uuid()}`;
     const pathClone = `./root/${directoryName}`;
-    const resolvePathCreateBranch = `../../../root/${directoryName}/.git`;
+    const basePath = config.get("directoryBasePath");
+    const resolvePathCreateBranch = `../../../${basePath}/${directoryName}/.git`;
     const pathFile = `root/${directoryName}/`;
     const localBranch = `${req.body.websiteName}_spaship`;
+    let signature = createSignature(localBranch);
 
     await cloneGitRepository(req.body.repositoryConfigs[0].repositoryLink, pathClone);
     await checkoutRemoteBranch(req.body.repositoryConfigs[0].branch, resolvePathCreateBranch);
@@ -96,11 +98,8 @@ async function createSPAShipTemplateRequest(req, pathFile) {
 }
 
 async function gitOperationsCommit(repository, signature, resolvePathCreateBranch, localBranch) {
-    let referr;
     let index;
     let oid;
-    let remoteGitURL = "ssh://git@xxxxxx/home/git/git_test_repo.git";
-    let remote;
 
     Git.Repository.open(path.resolve(__dirname, resolvePathCreateBranch))
         .then(function (repo) {
@@ -186,14 +185,12 @@ async function gitCreateBranch(resolvePathCreateBranch, localBranch) {
                         "Created new-branch on HEAD");
                 });
         });
-
-    console.log(`Created Branch : ${localBranch}`);
     await delay(100);
 }
 
-function createSignature() {
-    return Git.Signature.now("Soumyadip Chowdhury",
-        "Soumyadip@gmai.com");
+function createSignature(localBranch) {
+    return Git.Signature.now("spaship-deployment",
+    localBranch);
 }
 
 async function cloneGitRepository(repositoryLink, pathClone) {

@@ -32,30 +32,6 @@ export default () => {
                 SPA Lists
            </Link> 
             </NavItem>
-            {/* <NavItem itemId={0} isActive={!!useRouteMatch(`/dashboard/property/${website?.name}`)} disabled={true}>
-              <Link to={`/dashboard/property/${website?.name}`}>
-                <TopologyIcon />
-                Dashboard
-              </Link>
-            </NavItem> */}
-            {/* <NavItem itemId={1} isActive={!!useRouteMatch("/applications")}>
-              <Link to={`/applications`}>
-                <ApplicationsIcon />
-                Applications
-              </Link>
-            </NavItem>
-            <NavItem itemId={2} isActive={!!useRouteMatch("/authentication")}>
-              <Link to={`/authentication`}>
-                <KeyIcon />
-                Authentication
-              </Link>
-            </NavItem>
-            <NavItem itemId={3} isActive={!!useRouteMatch("/environments")}>
-              <Link to={`/environments`}>
-                <ServerIcon />
-                Environments
-              </Link>
-            </NavItem> */}
           </NavList>
         </Nav>
       </StackItem>
