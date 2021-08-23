@@ -29,8 +29,6 @@ npm run start
 
 ### Linux
 
-- ENV Setup
-
 For running SPAShip on Linux (preferably ubuntu) you have to setup the env. for SPAShip Manager & SPAShip Manager-UI seperately.
 
 - Steps: 
