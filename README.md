@@ -76,6 +76,67 @@ cd ../../
 npm run start
 ```
 
+### Windows
+
+For running SPAShip on Windows you must have Windows Subsystem for linux installed in your system, or you can download and configure ubuntu (vrs. >=18.4 LTS) from Microsoft Store. After installing, Please execute the following commands in your WSL CLI.
+
+1. Clone the Reository
+
+```
+git clone https://github.com/spaship/spaship-manager.git
+cd spaship-manager
+```
+
+2. Configure Manager
+
+```
+cd manager
+
+sudo apt-get update
+sudo apt-get --force-yes upgrade  -y
+sudo apt-get dist-upgrade
+sudo apt-get  install -y build-essential
+sudo  apt-get install sudo
+
+sudo apt-get install --yes curl
+sudo apt update
+sudo curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+sudo apt-get  --force-yes install -y nodejs
+sudo apt-get install --yes build-essential
+sudo apt-get install --only-upgrade bash
+
+sudo apt  --force-yes install -y libssl-dev
+sudo apt-get --force-yes install -y  libpcre3 libpcre3-dev
+sudo apt-get install libssl-dev
+sudo  apt --force-yes install  -y libgit2-dev
+sudo sudo dpkg --add-architecture i386
+sudo sudo apt-get update
+sudo sudo apt-get --force-yes install -y libstdc++6:i386 libgcc1:i386 libcurl4-gnutls-dev:i386
+
+sudo npm install
+sudo npm i nodegit
+```
+
+3. Configure Manager-UI
+
+```
+cd ../manager-ui
+
+sudo sudo dpkg --add-architecture i386
+sudo sudo apt-get update
+sudo sudo apt-get --force-yes install -y libstdc++6:i386 libgcc1:i386 libcurl4-gnutls-dev:i386
+
+sudo npm install
+sudo npm i nodegit
+```
+
+4. RUN SPAShip Manager
+
+```
+cd ../../
+
+npm run start
+```
 
 ## Testing
 
