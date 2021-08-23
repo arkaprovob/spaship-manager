@@ -25,7 +25,7 @@ export default (props: IProps) => {
     <>
       <GalleryItem>
         <Card isHoverable isSelectable={true} onClick={handleClick}>
-          <CardHeader>Add new property</CardHeader>
+          <CardHeader>Add new website</CardHeader>
           <CardBody>
             <AddCircleOIcon size="lg" />
           </CardBody>

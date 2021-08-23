@@ -1,22 +1,159 @@
-# SPAship &middot; [![Build Status](https://travis-ci.com/spaship/spaship.svg?branch=master)](https://travis-ci.com/spaship/spaship) [![codecov](https://codecov.io/gh/spaship/spaship/branch/master/graph/badge.svg)](https://codecov.io/gh/spaship/spaship)
-
+# SPAship 
 SPAship is an early-stages Single-Page App deployment and hosting platform.
-
-## Getting started
-
-To install SPAship's command-line interface: `npm install @spaship/cli` adding `-g` installs the package globally.
-To initialize a project: `spaship init` this will create a `spaship.yml` file based on your answers to the prompts.
-To deploy: create an archive by zipping the contents of a directory (let's call our file "Archive.zip" and target environment dev), then `spaship deploy Archive.zip --env=dev`
 
 ## Packages
 
 SPAship consists of a few packages, found inside the `packages` directory.
 
-- **CLI** - the `spaship` command-line interface
-- **Router** - a service for dynamically proxying requests to SPAs, or to remote systems
-- **Manager** - a web UI for managing SPAs
-- **API** - an API for deploying SPAs
-- **Common** - common utility functions for reading/writing config files, etc
+- **Manager** - Backend system for managing SPA Workflow
+- **Manager UI** - A web UI for managing SPAs
+
+## Set Up Env & Run SPAShip Manager 
+
+### Mac OS
+
+- ENV Setup
+
+```
+git clone https://github.com/spaship/spaship-manager.git
+cd spaship-manager
+npm i
+```
+
+- RUN SPAShip Manager 
+```
+npm run start
+```
+
+### Linux
+
+For running SPAShip on Linux (preferably ubuntu) you have to setup the env. for SPAShip Manager & SPAShip Manager-UI seperately.
+
+- Steps: 
+
+1. Clone the Reository
+
+```
+git clone https://github.com/spaship/spaship-manager.git
+cd spaship-manager
+```
+
+2. Configure Manager
+
+```
+cd packages/manager
+
+sudo apt  --force-yes install -y libssl-dev
+sudo apt-get --force-yes install -y  libpcre3 libpcre3-dev
+sudo apt-get install libssl-dev
+sudo  apt --force-yes install  -y libgit2-dev
+sudo sudo dpkg --add-architecture i386
+sudo sudo apt-get update
+sudo sudo apt-get --force-yes install -y libstdc++6:i386 libgcc1:i386 libcurl4-gnutls-dev:i386
+
+sudo npm install
+sudo npm i nodegit
+```
+
+3. Configure Manager-UI
+
+```
+cd ../manager-ui
+
+sudo sudo dpkg --add-architecture i386
+sudo sudo apt-get update
+sudo sudo apt-get --force-yes install -y libstdc++6:i386 libgcc1:i386 libcurl4-gnutls-dev:i386
+
+sudo npm install
+sudo npm i nodegit
+```
+
+4. RUN SPAShip Manager
+
+```
+cd ../../
+
+npm run start
+```
+
+### Windows
+
+For running SPAShip on Windows you must have Windows Subsystem for linux installed in your system, or you can download and configure ubuntu (vrs. >=18.4 LTS) from Microsoft Store. After installing, Please execute the following commands in your WSL CLI.
+
+1. Clone the Reository
+
+```
+git clone https://github.com/spaship/spaship-manager.git
+cd spaship-manager
+```
+
+2. Configure Manager
+
+```
+cd packages/manager
+
+sudo apt-get update
+sudo apt-get --force-yes upgrade  -y
+sudo apt-get dist-upgrade
+sudo apt-get  install -y build-essential
+sudo  apt-get install sudo
+
+sudo apt-get install --yes curl
+sudo apt update
+sudo curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+sudo apt-get  --force-yes install -y nodejs
+sudo apt-get install --yes build-essential
+sudo apt-get install --only-upgrade bash
+
+sudo apt  --force-yes install -y libssl-dev
+sudo apt-get --force-yes install -y  libpcre3 libpcre3-dev
+sudo apt-get install libssl-dev
+sudo  apt --force-yes install  -y libgit2-dev
+sudo sudo dpkg --add-architecture i386
+sudo sudo apt-get update
+sudo sudo apt-get --force-yes install -y libstdc++6:i386 libgcc1:i386 libcurl4-gnutls-dev:i386
+
+sudo npm install
+sudo npm i nodegit
+```
+
+3. Configure Manager-UI
+
+```
+cd ../manager-ui
+
+sudo sudo dpkg --add-architecture i386
+sudo sudo apt-get update
+sudo sudo apt-get --force-yes install -y libstdc++6:i386 libgcc1:i386 libcurl4-gnutls-dev:i386
+
+sudo npm install
+sudo npm i nodegit
+```
+
+4. RUN SPAShip Manager
+
+```
+cd ../../
+
+npm run start
+```
+
+### Docker Sytem
+
+```
+git clone https://github.com/spaship/spaship-manager.git
+cd spaship-manager
+
+docker network create spaship
+
+cd packages/manager
+docker build -t spa-manager .
+docker run -p 3000:3000 -d --net spaship --name manager spa-manager
+
+cd ../manager-ui
+docker build -t spa-ui .
+docker run -p 2468:2468 -d --net spaship --name ui spa-ui
+```
 
 ## Testing
 
@@ -40,42 +177,3 @@ Contributing is awesome! :sunglasses: This section is very much in progress, but
 We use [Conventional Commits][conventional]. It's a simple, standardized way to prefix commit messages. The major benefits are that CHANGELOGs can be updated automatically, and version bumps can also be automated. Please visit [conventionalcommits.org][conventional] and read up on how to use it. It's painless, I promise!
 
 Also, if you're working in a development branch, please don't worry about proper commit message format. Stick to the "commit early & often" mantra. The only requirement is that when your pull request is merged, choose "Squash & Merge" and write a proper conventional-commit message. Here's a short screencap of how to do that.
-
-![squash and merge screencap][squashgif]
-
-### Release process
-
-There are two commands to create and publish a new release.
-
-1.  `GH_TOKEN="YOUR_TOKEN" npm run autorelease`
-2.  `npm run autopublish`
-
-_Note_: "YOUR_TOKEN" is a placeholder; please replace it with a GitHub [personal access token][token]. When creating a personal access token, the only option that needs to be checked is "public_repo". Also, your GitHub user must have write access to this repository.
-
-Here is more detail about what `autorelease` and `autopublish` do.
-
-#### `autorelease`
-
-`npm run autorelease` does a few things.
-
-- Automatically bump the version number of any packages which have changed since the last tag. The type of version bump (major, minor, patch) is chosen automatically based on the types of changes found in the conventional commit log. For instance, a `BREAKING CHANGE` will result in a major version bump, while `feat` will result in a minor bump.
-- Update each package's CHANGELOG.md files, and aggregate those updates into the monorepo's root CHANGELOG.md
-- Create a git tag for the new version
-- Create a "release" object in github
-
-`autorelease` is a wrapper around [`lerna version`][lernaversion].
-
-#### `autopublish`
-
-`autopublish` will publish to NPM any packages that were updated by `autorelease`. This command is meant to be run after `autorelease`.
-
-#### Recovering from autorelease with bad GH_TOKEN
-
-If something goes wrong when you run `autorelease`, such as an invalid or forgotten `GH_TOKEN`, that's okay. Versions will still be bumped, git tags will still be created and pushed. The only thing missing is the GitHub Release description. To remedy that, go to [spaship/releases][releases]. You should see a release listed for the new version number, but it will be lacking a description. Click on it, then click Edit Release. Paste the relevant lines from [CHANGELOG.md][changelog] into the description. That's it!
-
-[conventional]: https://www.conventionalcommits.org/en/v1.0.0/
-[squashgif]: https://imgur.com/download/HDd06gq/
-[token]: https://github.com/settings/tokens/new
-[lernaversion]: https://github.com/lerna/lerna/tree/master/commands/version#readme
-[releases]: https://github.com/spaship/spaship/releases
-[changelog]: ./CHANGELOG.md

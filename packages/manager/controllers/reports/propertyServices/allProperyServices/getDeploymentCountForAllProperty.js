@@ -34,7 +34,9 @@ module.exports = async function getDeploymentCountForAllProperty(req, res) {
     var map = {};
     response.forEach((item) => {
       map[item.propertyName] = item.count
+      item.id = i++;
     });
+
     res.status(200).json(response);
 
   } catch (e) {

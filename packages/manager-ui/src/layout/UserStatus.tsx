@@ -13,28 +13,28 @@ import {
 } from "@patternfly/react-core";
 import { useHistory } from "react-router-dom";
 import UserAvatar from "../static/img/avatar.svg";
-import { useKeycloak } from "@react-keycloak/web";
+//import { useKeycloak } from "@react-keycloak/web";
 import { ISPAshipJWT } from "../keycloak";
 
 export default () => {
   const [isExpanded, setExpanded] = useState(false);
   const history = useHistory();
-  const { keycloak, initialized } = useKeycloak();
+ // const { keycloak, initialized } = useKeycloak();
 
   const onToggle = () => {
     setExpanded(!isExpanded);
   };
 
   const onClickLogout = async () => {
-    await keycloak.logout();
+   // await keycloak.logout();
     history.push("/login");
   };
 
-  if (!initialized) {
-    return <Text component={TextVariants.p}>Not Authenticated</Text>;
-  }
+  // if (!initialized) {
+  //   return <Text component={TextVariants.p}>Not Authenticated</Text>;
+  // }
 
-  const token = keycloak.tokenParsed as ISPAshipJWT;
+  //const token = keycloak.tokenParsed as ISPAshipJWT;
 
   return (
     <Accordion>
@@ -44,12 +44,12 @@ export default () => {
             <SplitItem>
               <Avatar id="user-avatar" src={UserAvatar} alt="Avatar image" />
             </SplitItem>
-            <SplitItem isFilled>{token.name}</SplitItem>
+            {/* <SplitItem isFilled>{token.name}</SplitItem> */}
           </Split>
         </AccordionToggle>
         <AccordionContent isHidden={!isExpanded}>
           <Text id="user-email" component={TextVariants.p}>
-            {token.email}
+            {/* {token.email} */}
           </Text>
           <Button id="logout-button" isBlock className="spaship_btn" onClick={onClickLogout}>
             Logout

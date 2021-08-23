@@ -7,11 +7,11 @@ import { get } from '../../utils/APIUtil';
 
 
 export default () => {
-    const { selected, setSelectedConfig } = useConfig();
+    const { selected, setSelectedConfig, env } = useConfig();
     const [event, setEvent] = useState([]);
     const { spaName } = useParams<{ spaName: string }>();
 
-    const getEventData = fetchEventData(selected, setEvent);
+    const getEventData = fetchEventData(selected, setEvent, env);
     
     useEffect(() => {
         getEventData();
@@ -19,7 +19,8 @@ export default () => {
 
     const chartData = [];
     const labelData = [];
-    let count = 0;
+    let count : any;
+    count = 0;
 
     for (let item of event) {
         const value = JSON.parse(JSON.stringify(item));
@@ -53,7 +54,7 @@ export default () => {
                     top: 20
                 }}
                 subTitle="Deployed Env"
-                title={count}
+                title={count || 0}
                 themeColor={ChartThemeColor.multiOrdered}
                 width={350}
             />
@@ -61,15 +62,15 @@ export default () => {
     );
 };
 
-function fetchEventData(selected: IConfig | undefined, setEvent: any) {
+function fetchEventData(selected: IConfig | undefined, setEvent: any, env : any) {
     return async () => {
         try {
-
-            const url = selected?.environments[0].api + "/event/get/chart/all/property/env";
+            const url = env.managerPath + "/event/get/chart/all/property/env";
             setEvent([]);
-            if (selected) {
-                console.log("Enviournment URL 0: " + url);
+            if (url) {
                 const data = await get<any>(url);
+                console.log("Env data");
+                console.log(data);
                 setEvent(data);
             }
         } catch (e) {

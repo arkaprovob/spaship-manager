@@ -90,14 +90,15 @@ if (configFile) {
 }
 
 nconf.defaults({
-  port: 2345,
+  port: 3000,
   host: "localhost",
   webroot: "/var/www",
   upload_dir: "/tmp/spaship_uploads",
   sse: "http://localhost:5000/sse/80",
+  directoryBasePath : 'root',
   db: {
     mongo: {
-      url: "localhost:27017",
+      url: process.env.DB_CON || 'localhost:27017',
       db_name: "spaship",
       mock: process.env.NODE_ENV !== "production", // use a mock database by default in dev environments
     },

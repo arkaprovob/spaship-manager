@@ -24,13 +24,10 @@ module.exports = async function getLatestActivities(req, res) {
       }
     ]);
 
-
-
     var codeMap = {
       "WEBSITE_CREATE": "deployed over", "WEBSITE_DELETE": "deleted from", "WEBSITE_UPDATE": "updated from"
     };
     let i = 1;
-
 
     latestPropertyActivityResponse.forEach((item) => {
       item.id = i++;

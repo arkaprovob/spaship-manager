@@ -23,12 +23,11 @@
     "start": "bash scripts/start.sh",
     "old-start": "npm run lerna run start",
     "bootstrap": "npm run lerna bootstrap --hoist",
-    "postinstall": "npm run bootstrap",
+    "postinstall": "lerna bootstrap",
     "test": "CI=true npm run lerna run test",
     "dev": "bash scripts/dev.sh",
     "lerna": "./node_modules/.bin/lerna",
-    "autorelease": "npm run lerna -- version --include-merged-tags --conventional-commits --create-release=github",
-    "autopublish": "npm run lerna publish from-git"
+    "testl": "npm run lerna bootstrap"
   },
   "husky": {
     "hooks": {
@@ -39,6 +38,7 @@
     "@patternfly/react-charts": "^6.15.3",
     "dotenv-expand": "5.1.0",
     "react-async-select": "^0.2.6",
-    "react-select": "^4.3.1"
+    "react-select": "^4.3.1",
+    "use-between": "0.0.18"
   }
 }

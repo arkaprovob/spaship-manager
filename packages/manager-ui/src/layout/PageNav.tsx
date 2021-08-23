@@ -8,7 +8,7 @@ import Namespace from "./Namespace";
 import useConfig from "../hooks/useConfig";
 
 export default () => {
-  const { configs, selected, setSelectedConfig, addConfig, removeConfig } = useConfig();
+  const {website, spa} = useConfig();
   return (
     <Stack height="100%">
       <StackItem>
@@ -20,29 +20,17 @@ export default () => {
       <StackItem isFilled>
         <Nav aria-label="Nav" theme="light" variant="default">
           <NavList>
-            <NavItem itemId={0} isActive={!!useRouteMatch(`/dashboard/property/${selected?.name}`)} disabled={true}>
-              <Link to={`/dashboard/property/${selected?.name}`}>
-                <TopologyIcon />
-                Dashboard
-              </Link>
-            </NavItem>
-            <NavItem itemId={1} isActive={!!useRouteMatch("/applications")}>
-              <Link to={`/applications`}>
+            <NavItem itemId={0}  isActive={(!!useRouteMatch(`/dashboard/property/${website}`) || !!useRouteMatch(`/dashboard/${website}/spaName/${spa}`))} disabled={true}>
+            <Link to={`/dashboard/property/one.redhat.com`}> 
                 <ApplicationsIcon />
-                Applications
-              </Link>
+                Dashboard
+             </Link> 
             </NavItem>
-            <NavItem itemId={2} isActive={!!useRouteMatch("/authentication")}>
-              <Link to={`/authentication`}>
-                <KeyIcon />
-                Authentication
-              </Link>
-            </NavItem>
-            <NavItem itemId={3} isActive={!!useRouteMatch("/environments")}>
-              <Link to={`/environments`}>
+            <NavItem itemId={1} isActive={!!useRouteMatch(`/dashboard/spa/${website}`)} disabled={true} >
+            <Link to={`/dashboard/spa/one.redhat.com`}> 
                 <ServerIcon />
-                Environments
-              </Link>
+                SPA Lists
+           </Link> 
             </NavItem>
           </NavList>
         </Nav>

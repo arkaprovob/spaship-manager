@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 export default () => {
   const [isOpen, setOpen] = useState(false);
   const history = useHistory();
-  const { selected } = useConfig();
+  const { selected, website } = useConfig();
 
   const onToggle = () => {
     setOpen(!isOpen);
@@ -23,7 +23,7 @@ export default () => {
   ];
 
   const toggle = (
-    <OptionsMenuToggle toggleTemplate={selected?.name} onToggle={onToggle} style={{ width: "100%", height: "50px" }} />
+    <OptionsMenuToggle toggleTemplate={website} onToggle={onToggle} style={{ width: "100%", height: "50px" }} />
   );
 
   return (

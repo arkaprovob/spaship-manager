@@ -1,5 +1,5 @@
-const { log } = require("@spaship/common/lib/logging/pino");
-const common = require("@spaship/common");
+//const { log } = require("@spaship/common/lib/logging/pino");
+//const common = require("@spaship/common");
 const FileService = require("../services/fileService");
 const DeployService = require("../services/deployService");
 const Application = require("../models/application");

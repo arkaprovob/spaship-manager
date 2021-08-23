@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { log } = require("@spaship/common/lib/logging/pino");
+//const { log } = require("@spaship/common/lib/logging/pino");
 const config = require("./config");
 
 const uri = `mongodb://${config.get("db:mongo:url")}/${config.get("db:mongo:db_name")}`;
@@ -16,15 +16,15 @@ const connect = async () => {
 };
 
 mongoose.connection.on("connected", function () {
-  log.info("Mongoose default connection is open to ", uri);
+  console.log("Mongoose default connection is open to ", uri);
 });
 
 mongoose.connection.on("error", function (err) {
-  log.error("Mongoose default connection has occured " + err + " error");
+  console.log("Mongoose default connection has occured " + err + " error");
 });
 
 mongoose.connection.on("disconnected", function () {
-  log.warn("Mongoose default connection is disconnected");
+  console.log("Mongoose default connection is disconnected");
 });
 
 module.exports = {

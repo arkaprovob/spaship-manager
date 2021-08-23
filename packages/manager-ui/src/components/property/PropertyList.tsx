@@ -1,4 +1,3 @@
-import { Gallery, GalleryItem, Page, PageSection, PageSectionVariants, Title } from "@patternfly/react-core";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { IConfig } from "../../config";
@@ -7,52 +6,56 @@ import Header from "../../layout/Header";
 import { get } from "../../utils/APIUtil";
 import EnvChart from "./EnvChart";
 import EnvMonthChart from "./EnvMonthChart";
+import { Gallery, GalleryItem, Page, PageSection, PageSectionVariants, Title } from "@patternfly/react-core";
 import LatestActivities from "./LatestActivities";
 import NewProperty from "./NewProperty";
 import Property from "./Property";
 
 export default () => {
-  const { configs, selected, setSelectedConfig, addConfig, removeConfig } = useConfig();
-  const [event, setEvent] = useState([]);
+  const { selected, setWebsiteConfig, website, env } = useConfig();
+  const [event, setEvent] = useState<any>([]);
+  const [websitelist, setWebsiteList] = useState<any>([]);
   const history = useHistory();
 
   const handleSubmit = (conf: IConfig) => {
-    addConfig(conf);
+    // addConfig(conf);
   };
 
-  const handleRemove = (conf: IConfig) => {
-    removeConfig(conf.name);
+  const onSelect = async (conf: any) => {
+    //  console.log(conf);
+    const websiteConfig = { name: conf.websiteName };
+    await setWebsiteConfig(websiteConfig);
+    history.push(`/dashboard/property/${conf.websiteName}`);
   };
 
-  const onSelect = async (conf: IConfig) => {
-    await setSelectedConfig(conf);
-    history.push("/applications");
-  };
-
-  const getEventData = fetchEventData(selected, setEvent);
+  const getEventData = fetchEventData(setEvent, env);
+  const getWebsiteData = fetchWebsiteData(setWebsiteList, env);
 
   useEffect(() => {
+    console.log("Pre Website data");
+    console.log(website);
     getEventData();
-  }, [selected]);
+    getWebsiteData();
+    console.log(websitelist);
+  }, [env, selected, website]);
 
-  const sortConfigs = getSortConfigs(configs);
+  // const sortConfigs = getSortConfigs(configs);
 
   return (
     <Page header={<Header />}>
 
       <PageSection variant={PageSectionVariants.darker}>
-        <Title headingLevel="h1">Choose a property</Title>
+        <Title headingLevel="h1">Choose a website</Title>
       </PageSection>
       <PageSection variant={PageSectionVariants.default}>
-        <Gallery hasGutter style={{ width: "70%" }}>
-          {sortConfigs.map((config) => (
-            <GalleryItem key={`property-${config.name}`}>
+        <Gallery hasGutter style={{ width: "100%" }}>
+          {websitelist.map((website: any) => (
+            <GalleryItem key={`property-${website.id}`}>
               <Property
-                config={config}
+                config={website}
                 selectedName={selected?.name}
                 event={event}
                 onSelect={onSelect}
-                onRemove={handleRemove}
               />
             </GalleryItem>
           ))}
@@ -74,7 +77,7 @@ export default () => {
         <br></br>
         <LatestActivities />
       </PageSection>
-      
+
     </Page>
   );
 };
@@ -91,14 +94,37 @@ function getSortConfigs(configs: IConfig[]) {
   });
 }
 
-function fetchEventData(selected: IConfig | undefined, setEvent : any) {
+function fetchEventData(setEvent: any, env: any) {
   return async () => {
     try {
-      const url = selected?.environments[0].api + "/event/get/all/property/count";
+      const url = env.managerPath + "/event/get/all/property/count";
+
       setEvent([]);
-      if (selected) {
+      if (url) {
         const data = await get<any>(url);
+        console.log(data);
         setEvent(data);
+      }
+
+    } catch (e) {
+      console.log(e);
+    }
+  };
+}
+
+
+
+function fetchWebsiteData(setWebsiteList: any, env: any) {
+  return async () => {
+    try {
+      const url = env.managerPath + "/website/list";
+      setWebsiteList([]);
+      if (url) {
+        const data = await get<any>(url);
+        console.log("fetchWebsiteData data from " + url);
+        console.log(data);
+        console.log(data);
+        setWebsiteList(data);
       }
 
     } catch (e) {
