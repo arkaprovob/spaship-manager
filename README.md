@@ -15,11 +15,9 @@ SPAship consists of a few packages, found inside the `packages` directory.
 - ENV Setup
 
 ```
-
 git clone https://github.com/spaship/spaship-manager.git
 cd spaship-manager
 npm i
-
 ```
 
 - RUN SPAShip Manager 
@@ -40,6 +38,23 @@ git clone https://github.com/spaship/spaship-manager.git
 cd spaship-manager
 ```
 
+2. Configure SPAShip-Manager
+
+```
+cd manager
+
+sudo apt  --force-yes install -y libssl-dev
+sudo apt-get --force-yes install -y  libpcre3 libpcre3-dev
+sudo apt-get install libssl-dev
+sudo  apt --force-yes install  -y libgit2-dev
+sudo sudo dpkg --add-architecture i386
+sudo sudo apt-get update
+sudo sudo apt-get --force-yes install -y libstdc++6:i386 libgcc1:i386 libcurl4-gnutls-dev:i386
+RUN node -v
+
+sudo npm install
+sudo npm i nodegit
+```
 
 
 ## Testing
