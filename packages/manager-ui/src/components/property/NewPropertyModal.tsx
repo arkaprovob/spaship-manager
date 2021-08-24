@@ -145,8 +145,6 @@ export default (props: IProps) => {
 
   }, [event, repositoryLink, treePath, website]);
 
-
-
   const handleNameChange = (value: string) => {
     setRepositoryLink(value);
     console.log(repositoryLink);
@@ -223,17 +221,12 @@ export default (props: IProps) => {
           </Button>,
         ]}
       >
-
-
-
-
         <Form isHorizontal>
           <FormGroup
             label="Wesite Name"
             isRequired
             fieldId="horizontal-form-name"
             helperText="Please provide the website name"
-
           >
             <TextInput
               isRequired
@@ -373,11 +366,7 @@ export default (props: IProps) => {
             </>
           </FormGroup>
         </Form>
-
-
-
       </Modal>
-
 
       <Modal
         title="Simple modal header"
