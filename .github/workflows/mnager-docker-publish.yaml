@@ -16,7 +16,7 @@ jobs:
     name: Push Docker image to Registries
     env:
       IMAGE_NAME: "spaship-manager"
-      REGISTRY_NAMESPACE: "arbhatta"
+      REGISTRY_NAMESPACE: "spaship"
     runs-on: ubuntu-latest
     steps:
       - name: Inject slug/short variables
