@@ -10,7 +10,7 @@ on:
       - '*'
     paths:
       - '*'
-
+      
 jobs:
   push_to_registry:
     name: Push Docker image to Registries
