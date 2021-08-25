@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@patternfly/react-charts": "6.15.14",
-    "@patternfly/react-core": "4.135.0",
+    "@patternfly/react-core": "4.147.0",
     "@patternfly/react-icons": "4.11.0",
     "@patternfly/react-styles": "4.11.0",
     "@patternfly/react-table": "4.29.0",
@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@patternfly/react-charts": "6.15.14",
-    "@patternfly/react-core": "4.135.0",
+    "@patternfly/react-core": "4.147.0",
     "@patternfly/react-icons": "4.11.0",
     "@patternfly/react-styles": "4.11.0",
     "@patternfly/react-table": "4.29.0",
