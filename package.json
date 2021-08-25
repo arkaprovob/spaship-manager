@@ -35,7 +35,7 @@
     }
   },
   "dependencies": {
-    "@patternfly/react-charts": "^6.15.3",
+    "@patternfly/react-charts": "6.15.14",
     "dotenv-expand": "5.1.0",
     "react-async-select": "^0.2.6",
     "react-select": "^4.3.1",
