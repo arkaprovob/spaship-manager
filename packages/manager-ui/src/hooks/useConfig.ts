@@ -7,7 +7,7 @@ const websiteKey = "spaship-website-config";
 
 const useConfig = () => {
   const [selected, setSelected] = useState<IConfig>();
-  const [env, setEnv] = useState<any>((window as any).SPAship.env);
+  const [env, setEnv] = useState<any>({ managerPath: "http://localhost:3000/api/v1"});
   const [website, setWebsite] = useState<string>("");
   const [spa, setSPA] = useState<string>("");
 
@@ -18,8 +18,6 @@ const useConfig = () => {
       console.error(err);
     }
   };
-
-
 
   const setSelectedConfig = (conf: IConfig) => {
     setSelected(conf);
