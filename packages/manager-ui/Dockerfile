@@ -29,11 +29,12 @@ RUN sudo apt-get update
 RUN sudo apt-get --force-yes install -y libstdc++6:i386 libgcc1:i386 libcurl4-gnutls-dev:i386
 RUN node -v
 
-RUN sudo chown -R `whoami` /app/*
-RUN sudo chown -R `whoami` /app/node_modules/*
 
 ADD  . /app
 WORKDIR /app
+
+RUN sudo chown -R `whoami` /app/*
+RUN sudo chown -R `whoami` /app/node_modules/*
 
 RUN find . -name "node_modules" -exec rm -rf '{}' +
 RUN ls && npm install
