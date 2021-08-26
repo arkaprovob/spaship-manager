@@ -33,12 +33,13 @@ RUN node -v
 ADD  . /app
 WORKDIR /app
 
-RUN sudo chown -R `whoami` /app/*
-RUN sudo chown -R `whoami` /app/node_modules/*
+
 
 RUN find . -name "node_modules" -exec rm -rf '{}' +
 RUN ls && npm install
 
+RUN sudo chown -R `whoami` /app/*
+RUN sudo chown -R `whoami` /app/node_modules/*
 
 EXPOSE 2468
 
