@@ -24,7 +24,7 @@ RUN apt-get  --force-yes install -y nodejs
 RUN apt-get install --yes build-essential
 RUN apt-get install --only-upgrade bash
 
-# Node Git Dependencies 
+# Node Git Dependencies
 
 #RUN apt  --force-yes install -y libpcre
 #RUN apt  --force-yes install -y libssl-dev
@@ -37,10 +37,10 @@ RUN apt-get install --only-upgrade bash
 
 
 #RUN curl https://launchpad.net/ubuntu/+source/apt/1.6.11/+build/16829590/+files/apt_1.6.11_amd64.deb
-#RUN sudo dpkg -i apt_1.6.11_amd64.deb 
-RUN sudo dpkg --add-architecture i386
-RUN sudo apt-get update
-RUN sudo apt-get --force-yes install -y libstdc++6:i386 libgcc1:i386 libcurl4-gnutls-dev:i386
+#RUN sudo dpkg -i apt_1.6.11_amd64.deb
+RUN dpkg --add-architecture i386
+RUN apt-get update
+RUN apt-get --force-yes install -y libstdc++6:i386 libgcc1:i386 libcurl4-gnutls-dev:i386
 RUN node -v
 
 ADD  . /app
@@ -62,7 +62,7 @@ RUN ls && npm install
 # RUN npm i
 
 #RUN apk add --update bash && rm -rf /var/cache/apk/*
-# RUN apt-get --update bash 
+# RUN apt-get --update bash
 
 EXPOSE 2468
 
