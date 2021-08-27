@@ -10,7 +10,7 @@ import useConfig from "../../hooks/useConfig";
 import { post } from "../../utils/APIUtil";
 
 interface IProps {
-  websiteName ?: string;
+  websiteName?: string;
   isModalOpen: boolean;
   onClose: () => void;
   onSubmit: (conf: IConfig) => void;
@@ -39,6 +39,7 @@ export default (props: IProps) => {
 
 
   const [repositoryLink, setRepositoryLink] = useState("");
+  const [gitlabProjectId, setGitlabProjectId] = useState("");
   const [branch, setBranch] = useState("");
   const [token, setToken] = useState("");
   const [spaFilePathRequest, setSpaFilePathRequest] = useState<any[]>([]);
@@ -56,8 +57,6 @@ export default (props: IProps) => {
 
   const handleWebsiteNameChange = (value: string) => {
     setWebsiteName(value);
-    console.log("Website Name");
-    console.log(websiteName);
   };
 
 
@@ -107,17 +106,37 @@ export default (props: IProps) => {
   };
 
   useEffect(() => {
-    if(websiteName == ""){
+    if (websiteName == "") {
       setWebsiteName(website);
     }
     if (repositoryLink.length > 23) {
       let repositoryKeys = repositoryLink.split('/');
-      axios.get(`https://api.github.com/repos/${repositoryKeys[3]}/${repositoryKeys[4]}/branches`)
-        .then(res => {
-          if (res.data.length != 0 && res.data.length != event.length) {
-            setEvent(res.data);
-          }
-        })
+      if (repositoryKeys.includes("github.com")) {
+        axios.get(`https://api.github.com/repos/${repositoryKeys[3]}/${repositoryKeys[4]}/branches`)
+          .then(res => {
+            if (res.data.length != 0 && res.data.length != event.length) {
+              setEvent(res.data);
+            }
+          })
+      }
+      else if (repositoryKeys.includes("gitlab.com")) {
+        axios.get(`https://gitlab.com/api/v4/projects?search=${repositoryKeys[4]}`)
+          .then(res => {
+            const response = res.data;
+            for (let item of response) {
+              if (item?.namespace.path == repositoryKeys[3]) {
+                axios.get(`https://gitlab.com/api/v4/projects/${item?.id}/repository/branches`)
+                  .then(res => {
+                    if (res.data.length != 0 && res.data.length != event.length) {
+                      setEvent(res.data);
+                      setGitlabProjectId(item.id);
+                    }
+                  })
+                break;
+              }
+            }
+          })
+      }
     }
     if (treePath.length > 0) {
       const tempPath = [];
@@ -139,43 +158,45 @@ export default (props: IProps) => {
       }
       setSpaFilePathRequest(tempSpaFilePathRequest);
       setFilePath(tempPath);
-      console.log(filePath);
-      console.log(spaFilePathRequest);
     }
 
   }, [event, repositoryLink, treePath, website]);
 
   const handleNameChange = (value: string) => {
     setRepositoryLink(value);
-    console.log(repositoryLink);
   };
 
   const handleTokenChange = (value: string) => {
     setToken(value);
-    console.log(token);
   }
 
   const handleBranchChange = (value: any) => {
     setBranch(value.name);
     let repositoryKeys = repositoryLink.split('/');
-    axios.get(`https://api.github.com/repos/${repositoryKeys[3]}/${repositoryKeys[4]}/branches/${value.name}`)
+    if (repositoryKeys.includes("github.com")) {
+      axios.get(`https://api.github.com/repos/${repositoryKeys[3]}/${repositoryKeys[4]}/branches/${value.name}`)
       .then(res => {
         if (res.data.length != 0 && res.data.length != event.length) {
           const treeURL = res.data.commit.commit.tree.url;
-          console.log(treeURL);
           axios.get(treeURL)
             .then(resPath => {
-              console.log(resPath.data.tree);
               setTreePath(resPath.data.tree);
             })
         }
       })
+    }
+    else if (repositoryKeys.includes("gitlab.com")) {
+      
+      axios.get(`https://gitlab.com/api/v4/projects/${gitlabProjectId}/repository/tree`)
+            .then(resPath => {
+              
+              setTreePath(resPath.data);
+            })
+    }
   };
 
   const onAddingItem = (i: any) => (event: any) => {
     for (let j = 0; j < spaFilePathRequest.length; j++) {
-      console.log(spaFilePathRequest[j].spaName);
-      console.log(filePath[i].name);
       if (spaFilePathRequest[j].spaName == filePath[i].name) {
         if (spaFilePathRequest[j].isActive == false)
           spaFilePathRequest[j].isActive = true;
@@ -185,20 +206,16 @@ export default (props: IProps) => {
         break;
       }
     }
-    console.log(spaFilePathRequest);
+    
   }
 
   const onAddingContext = (i: any) => (event: any) => {
     spaFilePathRequest[i].contextPath = event;
-    console.log(spaFilePathRequest);
   }
 
   const onAddingEnvs = (i: any) => (event: any) => {
-    console.log(i);
-    console.log(event);
     spaFilePathRequest[i].envStr = event;
     spaFilePathRequest[i].envs = event.split(",");
-    console.log(spaFilePathRequest);
   }
 
   const handleModalToggle = () => {
@@ -393,9 +410,7 @@ async function sendRequestToActions(env: any, websiteRequest: { websiteName: str
     const url = env.managerPath + "/website";
     if (url) {
       const data = await post<any>(url, websiteRequest);
-      console.log(data);
       alert(`SPA has been deployed, ${data.path}`);
-
       fetch(data.path, {
         method: 'GET',
         headers: {

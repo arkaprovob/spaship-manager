@@ -19,6 +19,7 @@ module.exports = async function gitOperations(req, res) {
     const resolvePathCreateBranch = `../../../${basePath}/${directoryName}/.git`;
     const pathFile = `root/${directoryName}/`;
     const localBranch = `${req.body.websiteName}_spaship`;
+    const gitToken = req.body.repositoryConfigs[0].gitToken;
     let signature = createSignature(localBranch);
 
     await cloneGitRepository(req.body.repositoryConfigs[0].repositoryLink, pathClone);
@@ -26,14 +27,13 @@ module.exports = async function gitOperations(req, res) {
     await gitCreateBranch(resolvePathCreateBranch, localBranch);
     repository = await gitCheckout(repository, resolvePathCreateBranch, localBranch);
     await createSPAShipTemplateRequest(req, pathFile);
-    await gitOperationsCommit(repository, signature, resolvePathCreateBranch, localBranch);
+    await gitOperationsCommit(repository, signature, resolvePathCreateBranch, localBranch, gitToken);
     await zipFiles(directoryName);
     const websiteResponse = await saveWebsite(req, res);
-    res.send({ actionStatus: "Git Actions Performed Successfully", path: path.resolve(__dirname, `./../../../root/${directoryName}.zip`), websiteResponse : websiteResponse });
+    res.send({ actionStatus: "Git Actions Performed Successfully", path: path.resolve(__dirname, `./../../../root/${directoryName}.zip`), websiteResponse: websiteResponse });
 }
 
 async function zipFiles(directoryName) {
-    //await delay(100);
     await zip(path.resolve(__dirname, `./../../../root/${directoryName}`), path.resolve(__dirname, `./../../../root/${directoryName}.zip`));
 }
 
@@ -97,7 +97,7 @@ async function createSPAShipTemplateRequest(req, pathFile) {
     }
 }
 
-async function gitOperationsCommit(repository, signature, resolvePathCreateBranch, localBranch) {
+async function gitOperationsCommit(repository, signature, resolvePathCreateBranch, localBranch, gitToken) {
     let index;
     let oid;
 
@@ -106,8 +106,6 @@ async function gitOperationsCommit(repository, signature, resolvePathCreateBranc
             repository = repo;
             repo.getBranch('refs/heads/' + localBranch)
                 .then(function (reference) {
-                    //checkout branch
-                    console.log(`1: Checking out ${reference}`);
                     return repo.checkoutRef(reference);
                 }).catch(function (e) {
                     console.log("Error :" + e);
@@ -149,7 +147,24 @@ async function gitOperationsCommit(repository, signature, resolvePathCreateBranc
             console.log("9 : Parent Commit Hash " + parent);
             return repository.createCommit("HEAD", signature, signature, "Commit with Date : " + new Date(), oid, [parent]);
         })
- 
+        .then(function () {
+            console.log("10. Push Started");
+            return repository.getRemote("origin"); 
+        })
+        .then(function (remote) {
+            return remote.push([`refs/heads/${localBranch}:refs/heads/${localBranch}`], {
+                callbacks: {
+                    credentials: function (url, userName) {
+                        console.log("Requesting creds");
+                        return Git.Cred.userpassPlaintextNew(gitToken, "");
+                    }
+                }
+            });
+        })
+        .then(function (err) {
+            console.log("Push error number:");
+            console.log(err);
+        })
         .catch(function (err) {
             console.log(err.toString());
         });
@@ -190,7 +205,7 @@ async function gitCreateBranch(resolvePathCreateBranch, localBranch) {
 
 function createSignature(localBranch) {
     return Git.Signature.now("spaship-deployment",
-    localBranch);
+        localBranch);
 }
 
 async function cloneGitRepository(repositoryLink, pathClone) {
