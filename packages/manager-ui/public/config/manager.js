@@ -1,4 +1,8 @@
 window.SPAship = {
+  env:
+  {
+    managerPath: "http://localhost:3000/api/v1",
+  },
   configs: [
     {
       name: "one.redhat.com",
@@ -12,8 +16,4 @@ window.SPAship = {
       ],
     },
   ],
-  env:
-  {
-    managerPath: "http://localhost:3000/api/v1",
-  },
 };
