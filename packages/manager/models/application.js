@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
 //Deperecated
-const ApplicationSchema = new Schema(
+const ApplicationSchema = new mongoose.Schema(
   {
     name: {
       type: String,

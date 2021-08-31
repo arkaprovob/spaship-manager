@@ -1,5 +1,6 @@
 const event = require('../../../models/event')
 const eventTimeTrace = require('../../../models/eventTimeTrace')
+const website = require('../../../models/website')
 const EventSource = require("eventsource");
 const { uuid } = require('uuidv4');
 const config = require('../../../config');

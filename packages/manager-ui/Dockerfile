@@ -63,6 +63,7 @@ RUN ls && npm install
 
 #RUN apk add --update bash && rm -rf /var/cache/apk/*
 # RUN apt-get --update bash 
+ENV REACT_APP_API_URL=http://localhost:3000/api/v1
 
 EXPOSE 2468
 
