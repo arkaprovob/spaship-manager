@@ -48,6 +48,7 @@ export default () => {
         <Title headingLevel="h1">Choose a website</Title>
       </PageSection>
       <PageSection variant={PageSectionVariants.default}>
+        
         <Gallery hasGutter style={{ width: "100%" }}>
           {websitelist.map((website: any) => (
             <GalleryItem key={`property-${website.id}`}>
@@ -123,8 +124,9 @@ function fetchWebsiteData(setWebsiteList: any, env: any) {
         const data = await get<any>(url);
         console.log("fetchWebsiteData data from " + url);
         console.log(data);
-        console.log(data);
-        setWebsiteList(data);
+        if(data){
+          setWebsiteList(data);
+        }
       }
 
     } catch (e) {

@@ -30,9 +30,11 @@ export default (props: IProps) => {
   const footer = "Deployed Website";
 
   var map = new Map();
-  event.forEach((item) => {
-    map.set(item.propertyName, item.count);
-  });
+  if(event){
+    event.forEach((item) => {
+      map.set(item.propertyName, item.count);
+    });
+  }
 
   const onClick = () => {
     onSelect(config);
