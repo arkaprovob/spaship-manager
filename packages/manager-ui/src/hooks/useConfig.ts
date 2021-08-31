@@ -7,7 +7,7 @@ const websiteKey = "spaship-website-config";
 
 const useConfig = () => {
   const [selected, setSelected] = useState<IConfig>();
-  const [env, setEnv] = useState<any>({ managerPath: "http://localhost:3000/api/v1"});
+  const [env, setEnv] = useState<any>({ managerPath: process.env.WDS_SOCKET_PATH});
   const [website, setWebsite] = useState<string>("");
   const [spa, setSPA] = useState<string>("");
 
