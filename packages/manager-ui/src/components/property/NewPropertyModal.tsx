@@ -3,7 +3,7 @@ import {
   CardHeader, CardTitle, Form, FormGroup, Modal, ModalVariant, TextInput
 } from "@patternfly/react-core";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "react-select";
 import { IConfig, SPAConfigutation } from "../../config";
 import useConfig from "../../hooks/useConfig";
