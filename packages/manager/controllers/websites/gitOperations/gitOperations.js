@@ -148,22 +148,18 @@ async function gitOperationsCommit(repository, signature, resolvePathCreateBranc
             return repository.createCommit("HEAD", signature, signature, "Commit with Date : " + new Date(), oid, [parent]);
         })
         .then(function () {
-            console.log("10. Push Started");
+            console.log("10: Push Started");
             return repository.getRemote("origin"); 
         })
         .then(function (remote) {
             return remote.push([`refs/heads/${localBranch}:refs/heads/${localBranch}`], {
                 callbacks: {
                     credentials: function (url, userName) {
-                        console.log("Requesting creds");
+                        console.log("11. Authenticate & Git Push");
                         return Git.Cred.userpassPlaintextNew(gitToken, "");
                     }
                 }
             });
-        })
-        .then(function (err) {
-            console.log("Push error number:");
-            console.log(err);
         })
         .catch(function (err) {
             console.log(err.toString());
