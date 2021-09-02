@@ -51,8 +51,9 @@ WORKDIR /app
 
 RUN find . -name "node_modules" -exec rm -rf '{}' +
 RUN ls && npm install
-
+RUN sudo npm i -g elm
 USER $user
+
 #RUN ls && npm i -g @patternfly/react-core
 #RUN ls && npm i -g @patternfly/react-icons
 #RUN ls && npm i -g @patternfly/react-styles
