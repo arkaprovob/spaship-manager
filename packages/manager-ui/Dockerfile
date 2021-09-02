@@ -34,7 +34,7 @@ WORKDIR /app
 
 RUN find . -name "node_modules" -exec rm -rf '{}' +
 RUN ls && npm install
-RUN sudo npm install --unsafe-perm=true --allow-root
+RUN npm install -g --unsafe-perm thePackage
 #USER $user
 ENV REACT_APP_API_URL=http://localhost:3000/api/v1
 
