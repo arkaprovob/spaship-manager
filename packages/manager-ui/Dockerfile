@@ -43,11 +43,16 @@ RUN sudo apt-get update
 RUN sudo apt-get --force-yes install -y libstdc++6:i386 libgcc1:i386 libcurl4-gnutls-dev:i386
 RUN node -v
 
+RUN mkdir app
+RUN chown -Rh $user:$user /app
+
 ADD  . /app
 WORKDIR /app
 
 RUN find . -name "node_modules" -exec rm -rf '{}' +
 RUN ls && npm install
+
+USER $user
 #RUN ls && npm i -g @patternfly/react-core
 #RUN ls && npm i -g @patternfly/react-icons
 #RUN ls && npm i -g @patternfly/react-styles
