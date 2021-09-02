@@ -36,7 +36,7 @@ RUN find . -name "node_modules" -exec rm -rf '{}' +
  RUN sudo chmod -R 777 /app
 RUN ls && npm install
  RUN sudo chmod -R 777 /app
-RUN sudo npm install -g --unsafe-perm thePackage
+#RUN sudo npm install -g --unsafe-perm thePackage
 #USER $user
 ENV REACT_APP_API_URL=http://localhost:3000/api/v1
 
