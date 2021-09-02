@@ -26,7 +26,8 @@ RUN apt-get install --only-upgrade bash
 RUN node -v
 
 RUN mkdir app
-#RUN chown -Rh $user:$user /app
+RUN chown -Rh $user:$user /app
+USER $user
 
 ADD  . /app
 WORKDIR /app
