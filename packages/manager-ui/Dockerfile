@@ -26,15 +26,15 @@ RUN apt-get install --only-upgrade bash
 RUN node -v
 
 RUN mkdir app
-RUN chown -Rh $user:$user /app
+#RUN chown -Rh $user:$user /app
 
 ADD  . /app
 WORKDIR /app
 
 RUN find . -name "node_modules" -exec rm -rf '{}' +
 RUN ls && npm install
-RUN sudo npm install --unsafe-perm -g elm
-USER $user
+RUN sudo npm install --unsafe-perm=true --allow-root
+#USER $user
 ENV REACT_APP_API_URL=http://localhost:3000/api/v1
 
 EXPOSE 2468
