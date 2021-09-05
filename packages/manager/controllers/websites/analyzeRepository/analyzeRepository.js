@@ -21,7 +21,7 @@ module.exports = async function gitOperations(req, res) {
     const analyzePath = `../../../${basePath}/${directoryName}`;
     const pathFile = `root/${directoryName}/`;
     await cloneGitRepository(req.body.repositoryLink, pathClone);
-    //await checkoutRemoteBranch(req.body.branch, resolvePathCreateBranch);
+    await checkoutRemoteBranch(req.body.branch, resolvePathCreateBranch);
 
     let filepaths = [];
     let responseFiles = [];
@@ -47,7 +47,9 @@ async function readFileAnalyze(analyzeScript, responseFiles, analyzePath) {
             if (data.includes('react') || data.includes('vue') || data.includes('angular')) {
                 console.log(path.resolve(__dirname, analyzePath));
                 console.log(analyzeScript);
-                responseFiles.push(analyzeScript.replace(path.resolve(__dirname, analyzePath), ''));
+                analyzeScript = analyzeScript.replace(path.resolve(__dirname, analyzePath), '')
+                analyzeScript = analyzeScript.replace('/package.json', '')
+                responseFiles.push(analyzeScript);
             }
             resolve(data);
         });

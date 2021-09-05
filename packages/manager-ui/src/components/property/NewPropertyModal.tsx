@@ -143,18 +143,17 @@ export default (props: IProps) => {
       const tempSpaFilePathRequest = [];
       let i = 1;
       for (let item of treePath) {
-        if (item.type == 'tree') {
+        console.log(item);
           const pathRequest = {
             id: i++,
-            name: item.path,
-            context: item.path,
+            name: item,
+            context: item,
             envs: ['prod', 'develop', 'stage'],
             //isChecked : true,
           }
-          const spaFilePathRequestItem = { spaName: item.path, contextPath: item.path, envs: ['prod', 'develop', 'stage'], isActive: false, envStr: 'prod,dev,stage' };
+          const spaFilePathRequestItem = { spaName: item, contextPath: item, envs: ['prod', 'develop', 'stage'], isActive: false, envStr: 'prod,dev,stage' };
           tempSpaFilePathRequest.push(spaFilePathRequestItem);
           tempPath.push(pathRequest);
-        }
       }
       setSpaFilePathRequest(tempSpaFilePathRequest);
       setFilePath(tempPath);
@@ -173,27 +172,47 @@ export default (props: IProps) => {
   const handleBranchChange = (value: any) => {
     setBranch(value.name);
     let repositoryKeys = repositoryLink.split('/');
-    if (repositoryKeys.includes("github.com")) {
-      axios.get(`https://api.github.com/repos/${repositoryKeys[3]}/${repositoryKeys[4]}/branches/${value.name}`)
-      .then(res => {
-        if (res.data.length != 0 && res.data.length != event.length) {
-          const treeURL = res.data.commit.commit.tree.url;
-          axios.get(treeURL)
-            .then(resPath => {
-              setTreePath(resPath.data.tree);
-            })
-        }
-      })
-    }
-    else if (repositoryKeys.includes("gitlab.com")) {
+    console.log('Handeling Branch');
+    const websiteRequest = {
+      websiteName: websiteName,
+          repositoryLink: repositoryLink,
+          branch: value.name,
+    };
+    getSPAData(env, websiteRequest);
+    // if (repositoryKeys.includes("github.com")) {
+    //   axios.get(`https://api.github.com/repos/${repositoryKeys[3]}/${repositoryKeys[4]}/branches/${value.name}`)
+    //   .then(res => {
+    //     if (res.data.length != 0 && res.data.length != event.length) {
+    //       const treeURL = res.data.commit.commit.tree.url;
+    //       axios.get(treeURL)
+    //         .then(resPath => {
+    //           setTreePath(resPath.data.tree);
+    //         })
+    //     }
+    //   })
+    // }
+    // else if (repositoryKeys.includes("gitlab.com")) {
       
-      axios.get(`https://gitlab.com/api/v4/projects/${gitlabProjectId}/repository/tree`)
-            .then(resPath => {
+    //   axios.get(`https://gitlab.com/api/v4/projects/${gitlabProjectId}/repository/tree`)
+    //         .then(resPath => {
               
-              setTreePath(resPath.data);
-            })
-    }
+    //           setTreePath(resPath.data);
+    //         })
+    // }
   };
+
+
+  async function getSPAData(env: any, websiteRequest: { websiteName: string; repositoryLink: string; branch: string;  }) {
+    try {
+      const url = env.managerPath + "/website/analyze/repository";
+      if (url) {
+        const data = await post<any>(url, websiteRequest);
+        setTreePath(data.analyzedFiles);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   const onAddingItem = (i: any) => (event: any) => {
     for (let j = 0; j < spaFilePathRequest.length; j++) {
@@ -410,6 +429,8 @@ async function sendRequestToActions(env: any, websiteRequest: { websiteName: str
     const url = env.managerPath + "/website";
     if (url) {
       const data = await post<any>(url, websiteRequest);
+      console.log('Response');
+      console.log(data);
       alert(`SPA has been deployed, ${data.path}`);
       fetch(data.path, {
         method: 'GET',
@@ -436,4 +457,5 @@ async function sendRequestToActions(env: any, websiteRequest: { websiteName: str
     console.log(e);
   }
 }
+
 

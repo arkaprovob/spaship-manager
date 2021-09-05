@@ -7,7 +7,7 @@ const websiteKey = "spaship-website-config";
 
 const useConfig = () => {
   const [selected, setSelected] = useState<IConfig>();
-  const [env, setEnv] = useState<any>({ managerPath: process.env.REACT_APP_API_URL });
+  const [env, setEnv] = useState<any>({ managerPath: process.env.REACT_APP_API_URL || 'http://localhost:3000/api/v1' });
   const [website, setWebsite] = useState<string>("");
   const [spa, setSPA] = useState<string>("");
 
