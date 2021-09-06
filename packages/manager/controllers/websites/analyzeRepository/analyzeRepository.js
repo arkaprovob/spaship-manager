@@ -156,7 +156,7 @@ function createSignature(localBranch) {
 
 async function cloneGitRepository(repositoryLink, pathClone) {
     console.log("Cloning Repository " + repositoryLink);
-    console.log("Cloning at path : ", pathclone)
+    console.log("Cloning at path : ", pathClone)
     return Git.Clone(repositoryLink, pathClone)
         .catch(function (err) { console.log(err); });
 }
