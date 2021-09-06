@@ -15,7 +15,7 @@ const delay = millis => new Promise((resolve, reject) => {
 module.exports = async function gitOperations(req, res) {
 
     const directoryName = `${req.body.websiteName}_temp_${uuid()}`;
-    const pathClone = `./root/${directoryName}`;
+    const pathClone =  path.resolve(__dirname, `./../../../root/${directoryName}`);
     const basePath = config.get("directoryBasePath");
     const resolvePathCreateBranch = `../../../${basePath}/${directoryName}/.git`;
     const analyzePath = `../../../${basePath}/${directoryName}`;
@@ -29,7 +29,7 @@ module.exports = async function gitOperations(req, res) {
     console.log(`Eesolve Path Create Branch : ${resolvePathCreateBranch}`);
     console.log(`Path File : ${pathFile}`);
     console.log(`Resolved Path : `, path.resolve(__dirname, `./../../../root/${directoryName}.zip`));
-    console.log(`System Dir Name : ${__dirname}`)
+    console.log(`System Dir Name : ${__dirname}`);
 
     let filepaths = [];
     let responseFiles = [];
@@ -156,6 +156,7 @@ function createSignature(localBranch) {
 
 async function cloneGitRepository(repositoryLink, pathClone) {
     console.log("Cloning Repository " + repositoryLink);
+    console.log("Cloning at path : ", pathclone)
     return Git.Clone(repositoryLink, pathClone)
         .catch(function (err) { console.log(err); });
 }
