@@ -15,7 +15,7 @@ module.exports = async function gitOperations(req, res) {
 
     let repository;
     const directoryName = `${req.body.websiteName}_temp_${uuid()}`;
-    const pathClone = `./root/${directoryName}`;
+    const pathClone =  path.resolve(__dirname, `./../../../root/${directoryName}`);
     const basePath = config.get("directoryBasePath");
     const resolvePathCreateBranch = `../../../${basePath}/${directoryName}/.git`;
     const pathFile = `root/${directoryName}/`;
