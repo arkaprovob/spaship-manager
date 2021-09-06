@@ -23,6 +23,14 @@ module.exports = async function gitOperations(req, res) {
     const gitToken = req.body.repositoryConfigs[0].gitToken;
     let signature = createSignature(localBranch);
 
+    console.log(`Directory name : ${directoryName}`);
+    console.log(`Path Clone : ${pathClone}`);
+    console.log(`Eesolve Path Create Branch : ${resolvePathCreateBranch}`);
+    console.log(`Path File : ${pathFile}`);
+    console.log(`Local Branch : ${localBranch}`);
+    console.log(`Resolved Path : `, path.resolve(__dirname, `./../../../root/${directoryName}.zip`));
+    console.log(`System Dir Name : ${__dirname}`)
+
     await cloneGitRepository(req.body.repositoryConfigs[0].repositoryLink, pathClone);
     await checkoutRemoteBranch(req.body.repositoryConfigs[0].branch, resolvePathCreateBranch);
     await gitCreateBranch(resolvePathCreateBranch, localBranch);

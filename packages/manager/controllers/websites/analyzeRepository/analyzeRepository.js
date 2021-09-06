@@ -23,6 +23,14 @@ module.exports = async function gitOperations(req, res) {
     await cloneGitRepository(req.body.repositoryLink, pathClone);
     await checkoutRemoteBranch(req.body.branch, resolvePathCreateBranch);
 
+
+    console.log(`Directory name : ${directoryName}`);
+    console.log(`Path Clone : ${pathClone}`);
+    console.log(`Eesolve Path Create Branch : ${resolvePathCreateBranch}`);
+    console.log(`Path File : ${pathFile}`);
+    console.log(`Resolved Path : `, path.resolve(__dirname, `./../../../root/${directoryName}.zip`));
+    console.log(`System Dir Name : ${__dirname}`)
+
     let filepaths = [];
     let responseFiles = [];
     filepaths = await walk(analyzePath, filepaths);
