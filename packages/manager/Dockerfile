@@ -32,13 +32,7 @@ RUN find . -name "node_modules" -exec rm -rf '{}' +
 RUN sudo chmod -R 777 /app
 RUN ls && npm install
 RUN sudo chmod -R 777 /app
-RUN npm i nodegit
 
 ENV DB_CON=mongo.spaship:27017
 EXPOSE 3000
 CMD [ "npm", "run", "start"]
-
-#docker network create spaship
-#docker run -p 3000:3000 -d --net spaship --name manager spa-manager
-#docker run -it -v mongodata:/data/db  -p 27017:27017 --name mongo -d --net spaship mongo
-#db-con = mongo.spaship:27017
