@@ -21,8 +21,9 @@ const sse = require("./controllers/reports/operatorServices/sse.js")
 
 const app = new express();
 app
-  .use(bodyParser.json())
+  .use(bodyParser.json( {limit: '200mb'}))
   .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.text({ limit: '200mb' }))
   .use(cors())
   .use(helmet())
   .use(compression())
