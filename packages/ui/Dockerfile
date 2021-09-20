@@ -26,7 +26,7 @@ WORKDIR /app
 RUN find . -name "node_modules" -exec rm -rf '{}' +
 RUN sudo chmod -R 777 /app
 RUN ls && npm install
-RUN sudo chmod -R 777 
+RUN sudo chmod -R 777 /app
 EXPOSE 2468
 
 CMD [ "npm", "run", "start"]
